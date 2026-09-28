@@ -1,4 +1,4 @@
-# 🔐 Laboratório de Criptografia Clássica e Moderna
+# Laboratório de Criptografia Clássica e Moderna
 
 Repositório da disciplina de **Segurança de Sistemas (JCRSEGS)** — Instituto Federal de São Paulo (IFSP).  
 Professor: **Tardelli Stekel**
@@ -7,21 +7,21 @@ O projeto consiste no desenvolvimento de uma aplicação web analítica e intera
 
 ---
 
-## 📋 Divisão dos exercícios
+## Divisão dos Exercícios
 
 | Nº | Exercício | Responsável | Status | Implementação |
 | :---: | --- | --- | :---: | :---: |
-| 1 | **One-Time Pad (OTP)** | Veríssimo | ✅ Concluído | TypeScript (Clean Code) + Simulador Web |
-| 2 | **Cifra de César** | Fabio | ⏳ Pendente | — |
-| 3 | **Cifra de Vigenère** | João Vitor | ✅ Concluído | Tradução Fiel em TypeScript + Simulador Web |
-| 4 | **Cifra de Hill** | Veríssimo | ✅ Concluído | TypeScript (Clean Code) + Simulador Web ($2\times 2$ e $3\times 3$) |
-| 5 | **Módulo Livre** | Fabio | ⏳ Pendente | — |
+| 1 | **One-Time Pad (OTP)** | Veríssimo | Concluído | TypeScript (Clean Code) + Simulador Web |
+| 2 | **Cifra de César** | Fabio | Pendente | — |
+| 3 | **Cifra de Vigenère** | João Vitor | Concluído | Tradução Fiel em TypeScript + Simulador Web |
+| 4 | **Cifra de Hill** | Veríssimo | Concluído | TypeScript (Clean Code) + Simulador Web ($2\times 2$ e $3\times 3$) |
+| 5 | **Módulo Livre** | Fabio | Pendente | — |
 
-> **Progresso:** 3 de 5 exercícios concluídos — **60%**.
+> **Progresso:** 3 de 5 exercícios concluídos (60%).
 
 ---
 
-## 🚀 Funcionalidades da Aplicação Web
+## Funcionalidades da Aplicação Web
 
 A aplicação conta com uma interface moderna desenvolvida com **Vite, TypeScript, Tailwind CSS e KaTeX**, oferecendo:
 

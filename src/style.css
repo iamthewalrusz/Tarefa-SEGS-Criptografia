@@ -6,30 +6,30 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 antialiased font-sans selection:bg-teal-500 selection:text-white;
+    @apply bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased font-sans transition-colors duration-200;
   }
 }
 
 .math-block {
-  @apply overflow-x-auto py-2 my-2 text-center text-slate-100;
+  @apply overflow-x-auto py-2 my-2 text-center text-slate-900 dark:text-slate-100;
 }
 
 .math-inline {
-  @apply inline-block px-1 text-slate-100;
+  @apply inline-block px-1 text-slate-900 dark:text-slate-100;
 }
 
-/* Custom scrollbars for matrix and bit tables */
+/* Scrollbars discretas e minimalistas */
 ::-webkit-scrollbar {
   height: 6px;
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(100, 116, 139, 0.1);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(51, 65, 85, 0.8);
-  border-radius: 9999px;
+  background: rgba(100, 116, 139, 0.4);
+  border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(20, 184, 166, 0.8);
+  background: rgba(100, 116, 139, 0.6);
 }

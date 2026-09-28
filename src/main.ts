@@ -16,303 +16,346 @@ function tex(math: string, displayMode: boolean = false): string {
   }
 }
 
-// Elementos de estado
+// Biblioteca de ícones SVG minimalistas (sem emojis)
+const icons = {
+  shield: `<svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>`,
+  lock: `<svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>`,
+  unlock: `<svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/></svg>`,
+  key: `<svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/></svg>`,
+  arrowRight: `<svg class="w-3.5 h-3.5 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>`,
+  check: `<svg class="w-3.5 h-3.5 inline-block text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`,
+  alert: `<svg class="w-3.5 h-3.5 inline-block text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`,
+  play: `<svg class="w-5 h-5 inline-block" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`,
+  matrix: `<svg class="w-4 h-4 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>`,
+};
+
+// Estado da aplicação
 let activeTab = 'visao-geral';
 
-// Template da aba Visão Geral
+// Controle de Tema (Dark / Light)
+function initTheme(): void {
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+
+  if (isDark) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+
+  const themeToggle = document.getElementById('theme-toggle');
+  themeToggle?.addEventListener('click', () => {
+    const isCurrentlyDark = document.documentElement.classList.contains('dark');
+    if (isCurrentlyDark) {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    } else {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  });
+
+  const homeBtn = document.getElementById('header-home-btn');
+  homeBtn?.addEventListener('click', () => {
+    activeTab = 'visao-geral';
+    renderActiveTab();
+  });
+}
+
+// ==========================================
+// VIEW: PÁGINA INICIAL (SÓBRIA E MINIMALISTA)
+// ==========================================
 function renderVisaoGeral(): string {
   return `
     <div class="space-y-8 animate-fadeIn">
-      <!-- Apresentação Geral -->
-      <section class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 sm:p-8 backdrop-blur">
-        <div class="max-w-3xl">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-400 text-xs font-medium mb-4">
-            <span>🛡️ Segurança de Sistemas (JCRSEGS)</span>
+      <!-- Apresentação Institucional Sóbria -->
+      <section class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-6 sm:p-8">
+        <div class="max-w-3xl space-y-3">
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-mono font-medium border border-slate-200 dark:border-slate-700">
+            <span>Segurança de Sistemas</span>
             <span>&bull;</span>
-            <span>Prof. Tardelli Stekel</span>
+            <span>Criptografia Simétrica e Algébrica</span>
           </div>
-          <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight">
-            Laboratório Interativo de Criptografia Clássica e Moderna
+          <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Plataforma Analítica de Algoritmos Criptográficos
           </h2>
-          <p class="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Plataforma computacional e epistemológica desenvolvida para análise, simulação e demonstração formal
-            dos algoritmos de cifragem fundamentais solicitados na atividade acadêmica. Implementado em
-            <strong>TypeScript</strong> nativo, sem bibliotecas criptográficas prontas, contemplando tanto a
-            rigorosidade matemática quanto a experimentação prática em tempo real.
+          <p class="text-slate-600 dark:text-slate-300 text-xs sm:text-sm leading-relaxed">
+            Ambiente computacional voltado ao estudo comparativo, dedução formal e simulação de primitivas criptográficas clássicas e modernas.
+            Todos os algoritmos foram concebidos em <strong>TypeScript</strong> puro, contemplando análise de integridade, determinantes modulares e aritmética em anéis finitos.
           </p>
-        </div>
-
-        <!-- Matriz de Divisão de Atividades -->
-        <div class="mt-8 border-t border-slate-800 pt-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-            <h3 class="text-base font-semibold text-white flex items-center gap-2">
-              <span>📋 Divisão dos Exercícios e Status da Equipe</span>
-            </h3>
-            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 border border-slate-700 text-slate-300 font-mono">
-              Progresso do Repositório: <strong>60% concluído (3 de 5)</strong>
-            </span>
-          </div>
-
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-xs sm:text-sm border-collapse">
-              <thead>
-                <tr class="border-b border-slate-800 text-slate-400 font-medium">
-                  <th class="py-2.5 px-3">Nº</th>
-                  <th class="py-2.5 px-3">Exercício / Técnica</th>
-                  <th class="py-2.5 px-3">Responsável</th>
-                  <th class="py-2.5 px-3">Status</th>
-                  <th class="py-2.5 px-3 text-right">Ação</th>
-                </tr>
-              </thead>
-              <tbody class="divide-y divide-slate-800/60 font-mono">
-                <tr class="bg-teal-950/20 text-slate-200">
-                  <td class="py-3 px-3 font-semibold text-teal-400">1</td>
-                  <td class="py-3 px-3 font-sans font-medium text-white">One-Time Pad (OTP) Decimal e Binário</td>
-                  <td class="py-3 px-3 text-slate-300">Veríssimo</td>
-                  <td class="py-3 px-3">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-emerald-950/60 border border-emerald-700/60 text-emerald-400">
-                      ✅ Concluído (TypeScript)
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <button class="nav-jump text-xs text-teal-400 hover:text-teal-300 underline font-sans" data-jump="otp">Acessar &rarr;</button>
-                  </td>
-                </tr>
-                <tr class="text-slate-400">
-                  <td class="py-3 px-3">2</td>
-                  <td class="py-3 px-3 font-sans">Cifra de César</td>
-                  <td class="py-3 px-3">Fabio</td>
-                  <td class="py-3 px-3">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-amber-950/40 border border-amber-800/40 text-amber-400">
-                      ⏳ Pendente
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right text-slate-400">—</td>
-                </tr>
-                <tr class="bg-slate-900/40 text-slate-200">
-                  <td class="py-3 px-3 font-semibold text-teal-400">3</td>
-                  <td class="py-3 px-3 font-sans font-medium text-white">Cifra de Vigenère</td>
-                  <td class="py-3 px-3 text-slate-300">João Vitor</td>
-                  <td class="py-3 px-3">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-emerald-950/60 border border-emerald-700/60 text-emerald-400">
-                      ✅ Concluído (Traduzido TS)
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <button class="nav-jump text-xs text-teal-400 hover:text-teal-300 underline font-sans" data-jump="vigenere">Acessar &rarr;</button>
-                  </td>
-                </tr>
-                <tr class="bg-teal-950/20 text-slate-200">
-                  <td class="py-3 px-3 font-semibold text-teal-400">4</td>
-                  <td class="py-3 px-3 font-sans font-medium text-white">Cifra de Hill (Álgebra Linear Modular)</td>
-                  <td class="py-3 px-3 text-slate-300">Veríssimo</td>
-                  <td class="py-3 px-3">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-emerald-950/60 border border-emerald-700/60 text-emerald-400">
-                      ✅ Concluído (TypeScript)
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right">
-                    <button class="nav-jump text-xs text-teal-400 hover:text-teal-300 underline font-sans" data-jump="hill">Acessar &rarr;</button>
-                  </td>
-                </tr>
-                <tr class="text-slate-400">
-                  <td class="py-3 px-3">5</td>
-                  <td class="py-3 px-3 font-sans">Módulo Livre (Expansão / Criptoanálise)</td>
-                  <td class="py-3 px-3">Fabio</td>
-                  <td class="py-3 px-3">
-                    <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-xs bg-amber-950/40 border border-amber-800/40 text-amber-400">
-                      ⏳ Pendente
-                    </span>
-                  </td>
-                  <td class="py-3 px-3 text-right text-slate-400">—</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
       </section>
 
-      <!-- Cartões das Cifras Concluídas -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 hover:border-teal-500/40 transition group">
-          <div class="text-teal-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">Exercício 1</div>
-          <h4 class="text-lg font-bold text-white group-hover:text-teal-300 transition">One-Time Pad (OTP)</h4>
-          <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-            Cifragem de Vernam com entradas e saídas decimais na base 10, conversão explícita para cadeia binária e operação XOR simétrica.
-          </p>
-          <button class="mt-4 nav-jump inline-flex items-center text-xs font-medium text-teal-400 hover:text-teal-300" data-jump="otp">
-            Abrir simulador e teoria &rarr;
-          </button>
-        </div>
+      <!-- Menu Principal de Navegação (Cards Minimalistas sem Nomes ou Status) -->
+      <div>
+        <h3 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4">
+          Módulos Criptográficos Disponíveis
+        </h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- Card 1: OTP -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-5 flex flex-col justify-between hover:border-slate-400 dark:hover:border-slate-700 transition">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
+                <span>Módulo 01</span>
+                <span>Fita Única</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>One-Time Pad (OTP)</span>
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Cifragem por fluxo binário com entradas e saídas decimais na base 10. Dedução do sigilo incondicional de Shannon e demonstração da vulnerabilidade crítica de reutilização da chave.
+              </p>
+            </div>
+            <button class="mt-5 nav-jump inline-flex items-center justify-between w-full px-3 py-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-700 transition" data-jump="otp">
+              <span>Acessar Módulo</span>
+              <span>${icons.arrowRight}</span>
+            </button>
+          </div>
 
-        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 hover:border-teal-500/40 transition group">
-          <div class="text-teal-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">Exercício 3</div>
-          <h4 class="text-lg font-bold text-white group-hover:text-teal-300 transition">Cifra de Vigenère</h4>
-          <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-            Cifra polialfabética de substituição periódica com validação de mensagens de no mínimo 4 palavras e alinhamento cíclico da chave.
-          </p>
-          <button class="mt-4 nav-jump inline-flex items-center text-xs font-medium text-teal-400 hover:text-teal-300" data-jump="vigenere">
-            Abrir simulador e teoria &rarr;
-          </button>
-        </div>
+          <!-- Card 2: Vigenère -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-5 flex flex-col justify-between hover:border-slate-400 dark:hover:border-slate-700 transition">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
+                <span>Módulo 02</span>
+                <span>Polialfabético</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Cifra de Vigenère</span>
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Substituição polialfabética periódica com alinhamento alfabético contínuo da chave e validação obrigatória de frases com no mínimo quatro palavras.
+              </p>
+            </div>
+            <button class="mt-5 nav-jump inline-flex items-center justify-between w-full px-3 py-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-700 transition" data-jump="vigenere">
+              <span>Acessar Módulo</span>
+              <span>${icons.arrowRight}</span>
+            </button>
+          </div>
 
-        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-5 hover:border-teal-500/40 transition group">
-          <div class="text-teal-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">Exercício 4</div>
-          <h4 class="text-lg font-bold text-white group-hover:text-teal-300 transition">Cifra de Hill</h4>
-          <p class="text-xs text-slate-400 mt-2 line-clamp-3">
-            Álgebra linear modular sobre Z_26, com cálculo de determinante, matriz adjunta, inversa modular por Euclides Estendido e suporte a 2x2 e 3x3.
-          </p>
-          <button class="mt-4 nav-jump inline-flex items-center text-xs font-medium text-teal-400 hover:text-teal-300" data-jump="hill">
-            Abrir simulador e teoria &rarr;
-          </button>
+          <!-- Card 3: Hill -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-5 flex flex-col justify-between hover:border-slate-400 dark:hover:border-slate-700 transition">
+            <div class="space-y-2.5">
+              <div class="flex items-center justify-between text-xs font-mono text-slate-500 dark:text-slate-400">
+                <span>Módulo 03</span>
+                <span>Álgebra Linear</span>
+              </div>
+              <h4 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span>Cifra de Hill</span>
+              </h4>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                Transformações lineares no anel modular Z_26 para ordens 2x2 e 3x3. Análise diagnóstica de invertibilidade, determinantes e matriz adjunta inversa via Euclides Estendido.
+              </p>
+            </div>
+            <button class="mt-5 nav-jump inline-flex items-center justify-between w-full px-3 py-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-750 text-slate-800 dark:text-slate-200 text-xs font-medium border border-slate-200 dark:border-slate-700 transition" data-jump="hill">
+              <span>Acessar Módulo</span>
+              <span>${icons.arrowRight}</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   `;
 }
 
-// Template da aba One-Time Pad
+// ==========================================
+// VIEW: ONE-TIME PAD (OTP)
+// ==========================================
 function renderOtpTab(): string {
   return `
-    <div class="space-y-10 animate-fadeIn max-w-5xl mx-auto">
-      <!-- Breadcrumb e Cabeçalho -->
+    <div class="space-y-10 animate-fadeIn max-w-4xl mx-auto">
       <div>
-        <div class="text-xs font-mono text-teal-400 uppercase tracking-wider">Exercício 1 &bull; Atividade de Segurança de Sistemas</div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
+        <div class="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Criptografia de Fluxo &bull; Primitiva Involutiva</div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mt-1">
           One-Time Pad (OTP) e a Operação XOR Decimal
         </h2>
-        <p class="text-sm text-slate-400 mt-2">
-          Fundamentação teórica de Shannon, conversão de bases numéricas e simulador de cifragem/decifragem.
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+          Origem do termo "One-Time", dedução do segredo perfeito de Shannon e a catástrofe criptográfica da reutilização de chave.
         </p>
       </div>
 
-      <!-- Seção 1: Contextualização Epistemológica e Histórica -->
-      <section class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          1. Origem Epistemológica e Contexto Histórico
+      <!-- Seção 1: Origem Epistemológica e Por que se chama "One-Time" -->
+      <section class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed space-y-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          1. Origem Epistemológica e o Conceito de "One-Time Pad"
         </h3>
         <p>
-          O algoritmo <em>One-Time Pad</em> (OTP), inicialmente concebido por <strong>Gilbert Vernam em 1919</strong>
-          para a telegrafia automática e posteriormente aperfeiçoado pelo major <strong>Joseph Mauborgne</strong>,
-          constitui um marco divisor na história da criptologia. Em 1949, o matemático <strong>Claude Shannon</strong>
-          publicou sua obra seminal, <em>"Communication Theory of Secrecy Systems"</em> no <em>Bell System Technical Journal</em>,
-          estabelecendo a prova formal de que o OTP provê <strong>sigilo perfeito</strong> (<em>perfect secrecy</em>).
+          O nome <strong>One-Time Pad</strong> provém diretamente de sua implementação física original nas telecomunicações diplomáticas e militares do início do século XX.
+          As partes comunicantes recebiam cadernos ou blocos de folhas de papel destacáveis — denominados <em>pads</em>.
+          Cada folha do bloco continha uma sequência de números ou caracteres verdadeiramente aleatórios impressos, compartilhada previamente entre o emissor e o receptor.
         </p>
         <p>
-          No paradigma de Shannon, uma cifra possui sigilo perfeito quando o conhecimento do criptograma
-          ${tex("C")} não fornece nenhuma informação adicional a respeito do conteúdo da mensagem original ${tex("M")}.
-          Formalmente, isso se traduz pela igualdade de probabilidades a posteriori e a priori:
+          O protocolo operacional de segurança exigia que cada folha fosse utilizada para cifrar estritamente uma única mensagem (<strong>one-time</strong>) e,
+          imediatamente após a transmissão, a folha correspondente do <em>pad</em> fosse <strong>fisicamente destacada e destruída</strong> (frequentemente incinerada).
+          Dessa rotina de uso único decorre a denominação formal da técnica.
         </p>
-        <div class="math-block bg-slate-900/60 p-3 rounded-lg border border-slate-800">
-          ${tex("\\mathbb{P}(M = m \\mid C = c) = \\mathbb{P}(M = m), \\quad \\forall m \\in \\mathcal{M}, \\; c \\in \\mathcal{C}", true)}
+        <p>
+          Em 1949, <strong>Claude Shannon</strong> formulou a teoria matemática do sigilo perfeito (<em>perfect secrecy</em>).
+          Shannon demonstrou que, se a chave ${tex("K")} for:
+        </p>
+        <ol class="list-decimal list-inside space-y-1 pl-2 text-slate-600 dark:text-slate-300">
+          <li>Verdadeiramente aleatória (entropia máxima, equiprovável);</li>
+          <li>De comprimento no mínimo idêntico ao da mensagem (${tex("|K| \\ge |M|")});</li>
+          <li><strong>Nunca reutilizada sob nenhuma hipótese</strong>;</li>
+        </ol>
+        <p>
+          o criptograma ${tex("C")} é estatisticamente independente da mensagem original ${tex("M")}, tornando impossível qualquer quebra por criptoanálise,
+          independentemente de quanto poder computacional o adversário disponha:
+        </p>
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-3 rounded-md border border-slate-200 dark:border-slate-800">
+          ${tex("\\mathbb{P}(M = m \\mid C = c) = \\mathbb{P}(M = m), \\quad \\forall m \\in \\mathcal{M}", true)}
         </div>
       </section>
 
-      <!-- Seção 2: Fundamentação Matemática e Decodificação de Notação -->
-      <section class="space-y-4 text-sm text-slate-300 leading-relaxed">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          2. Fundamentação Teórica e Formulação Matemática
+      <!-- Seção 2: O Risco Crítico da Reutilização de Chave (Two-Time Pad) -->
+      <section class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed space-y-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          2. A Catástrofe da Reutilização de Chave: Por que a Chave Deve Ser Descartada?
         </h3>
         <p>
-          A operação fundamental do One-Time Pad clássico é a adição bit a bit em corpo finito ${tex("\\mathbb{F}_2")},
-          isomórfica à porta lógica <strong>OU Exclusivo (XOR)</strong>, denotada por ${tex("\\oplus")}.
-          No presente exercício acadêmico, o algoritmo recebe valores no sistema decimal (base 10), realiza a conversão
-          explícita para sequências binárias, executa a operação ${tex("\\oplus")} e reconverte o resultado para a base 10.
+          A exigência de que a chave seja descartada após um único uso não é uma recomendação empírica de boas práticas, mas sim um <strong>requisito matemático fundamental</strong>.
+          Quando um emissor comete o erro fatal de cifrar duas mensagens distintas (${tex("M_1")} e ${tex("M_2")}) utilizando a mesma chave ${tex("K")},
+          o sistema entra em colapso criptográfico absoluto. Esse cenário é conhecido na literatura como o ataque <strong>Two-Time Pad</strong>.
         </p>
 
-        <!-- Decodificação de Notação e Termos em Blockquote Identificado -->
-        <div class="border-l-4 border-teal-500 bg-slate-900/80 p-4 rounded-r-lg space-y-2">
-          <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider font-mono">
-            Decodificação de Notação e Termos:
+        <p>
+          Considere os dois textos cifrados interceptados pelo adversário:
+        </p>
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-2.5 rounded-md border border-slate-200 dark:border-slate-800">
+          ${tex("C_1 = M_1 \\oplus K \\quad \\text{e} \\quad C_2 = M_2 \\oplus K", true)}
+        </div>
+
+        <p>
+          Se o adversário aplicar a operação XOR entre os dois criptogramas interceptados, a chave ${tex("K")} se anula por auto-cancelamento:
+        </p>
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-3 rounded-md border border-slate-200 dark:border-slate-800">
+          ${tex("C_1 \\oplus C_2 = (M_1 \\oplus K) \\oplus (M_2 \\oplus K) = M_1 \\oplus M_2 \\oplus (K \\oplus K) = M_1 \\oplus M_2", true)}
+        </div>
+
+        <!-- Alerta e Decodificação do Two-Time Pad -->
+        <div class="border-l-4 border-amber-500 bg-amber-500/10 dark:bg-amber-950/20 p-4 rounded-r-md space-y-2">
+          <div class="text-xs font-semibold text-amber-700 dark:text-amber-400 uppercase tracking-wider font-mono flex items-center gap-1.5">
+            <span>${icons.alert}</span>
+            <span>Consequência Analítica da Reutilização:</span>
           </div>
-          <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm text-slate-300">
-            <li><strong>${tex("M_{10}")}</strong>: Mensagem em texto claro expressa como inteiro no sistema decimal (base 10).</li>
-            <li><strong>${tex("K_{10}")}</strong>: Chave criptográfica única e aleatória no sistema decimal (base 10).</li>
-            <li><strong>${tex("\\operatorname{bin}(x)")}</strong>: Função de conversão determinística de base 10 para base 2 por divisões sucessivas.</li>
-            <li><strong>${tex("C_{10}")}</strong>: Criptograma resultante apresentado no sistema decimal (base 10).</li>
-            <li><strong>${tex("\\oplus")}</strong>: Operador booleano XOR aplicado a cada par de bits alinhados (${tex("a \\oplus b = (a + b) \\pmod 2")}).</li>
+          <p class="text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+            A chave ${tex("K")} desaparece completamente da equação. O adversário agora possui ${tex("M_1 \\oplus M_2")}.
+            Em textos de linguagem natural (como a codificação ASCII), o caractere de espaço em branco (código 32 ou <code>0x20</code>) possui apenas o sexto bit ativo.
+            Quando o espaço sofre XOR com uma letra do alfabeto, ele simplesmente inverte a caixa da letra (maiúscula/minúscula).
+            Através de heurísticas de frequência e reconhecimento de palavras de dicionário, é possível derivar ${tex("M_1")} e ${tex("M_2")} recursivamente sem jamais conhecer a chave ${tex("K")}.
+          </p>
+        </div>
+      </section>
+
+      <!-- Seção 3: Formulação do Exercício (Decimal e Binário) -->
+      <section class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed space-y-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          3. Formulação Técnica do Exercício Acadêmico
+        </h3>
+        <p>
+          O exercício 1 estipula a manipulação dos valores em base 10 (sistema decimal), exigindo que a conversão para base 2 conste explicitamente no algoritmo:
+        </p>
+
+        <div class="border-l-4 border-slate-500 dark:border-slate-600 bg-slate-100 dark:bg-slate-900/60 p-4 rounded-r-md space-y-2">
+          <div class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
+            Relação de Notação e Etapas Algorítmicas:
+          </div>
+          <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm text-slate-600 dark:text-slate-400">
+            <li><strong>${tex("M_{10}")}</strong>: Mensagem em claro informada como inteiro decimal (${tex("M \\ge 0")}).</li>
+            <li><strong>${tex("K_{10}")}</strong>: Chave aleatória informada como inteiro decimal (${tex("K \\ge 0")}).</li>
+            <li><strong>${tex("\\operatorname{dec2bin}(n)")}</strong>: Algoritmo de divisões sucessivas por 2 que produz a cadeia binária.</li>
+            <li><strong>${tex("\\operatorname{bin2dec}(b)")}</strong>: Reconstrução posicional por potências de 2: ${tex("\\sum_{i=0}^{L-1} b_i 2^{L-1-i}")}.</li>
+            <li><strong>${tex("C_{10} = \\operatorname{bin2dec}(\\operatorname{dec2bin}(M_{10}) \\oplus \\operatorname{dec2bin}(K_{10}))")}</strong>: Criptograma em base decimal.</li>
           </ul>
         </div>
+      </section>
 
-        <p>
-          A propriedade algébrica que viabiliza a decriptação exata é a <strong>auto-inversibilidade</strong> do operador XOR,
-          decorrente do fato de que todo elemento em ${tex("(\\mathbb{F}_2^n, \\oplus)")} é seu próprio inverso aditivo:
-        </p>
-        <div class="math-block bg-slate-900/60 p-3 rounded-lg border border-slate-800">
-          ${tex("C = M \\oplus K \\implies C \\oplus K = (M \\oplus K) \\oplus K = M \\oplus (K \\oplus K) = M \\oplus \\mathbf{0} = M", true)}
+      <!-- Seção 4: Demonstrações Visuais em Vídeo (Dois Slots Específicos) -->
+      <section class="space-y-6">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          4. Demonstrações Visuais Didáticas (Planejamento de Vídeos)
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Vídeo 1: Passo a Passo do Algoritmo -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
+                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
+                  ${icons.play}
+                </div>
+                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 1: Cifragem Passo a Passo</span>
+                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~14s</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <strong>Roteiro Didático:</strong> Exibe com clareza a entrada de ${tex("M=42")} e ${tex("K=27")}, sua conversão explícita em cadeias de 8 bits (<code>00101010</code> e <code>00011011</code>), o scanner do operador XOR iluminando bits diferentes, a geração de ${tex("C=49")} e a decifragem reversa simétrica.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
+              Posição: Demonstração da Cifragem Decimal-Binária
+            </div>
+          </div>
+
+          <!-- Vídeo 2: O Risco do Two-Time Pad -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
+                <div class="h-10 w-10 rounded bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-2">
+                  ${icons.play}
+                </div>
+                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 2: O Risco do Two-Time Pad</span>
+                <span class="text-[11px] text-amber-500 font-mono mt-1">Duração prevista: ~14s</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <strong>Roteiro Didático:</strong> Demonstra visualmente duas mensagens cifradas com a mesma chave. A operação ${tex("C_1 \\oplus C_2")} faz a chave ${tex("K")} evaporar graficamente da tela, restando apenas ${tex("M_1 \\oplus M_2")} e permitindo que as palavras originais apareçam.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-amber-500">
+              Posição: Demonstração do Ataque por Reutilização
+            </div>
+          </div>
         </div>
       </section>
 
-      <!-- Seção 3: Demonstração Visual em Vídeo (Placeholder Estruturado) -->
-      <section class="space-y-3">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          3. Demonstração Visual em Vídeo (Manim &bull; Didactic Animation)
-        </h3>
-        <p class="text-xs text-slate-400">
-          A animação a seguir sintetiza visualmente o fluxo de decomposição de valores decimais em trens de bits, o scanner de comparação lógica XOR e a reconstituição decimal simétrica:
-        </p>
-        
-        <!-- Componente Didático de Vídeo Conforme Padrão DataLab -->
-        <figure class="flex flex-col items-center justify-center my-6">
-          <div class="w-full max-w-xl aspect-video overflow-hidden rounded-xl border border-slate-800 bg-slate-950 flex flex-col items-center justify-center p-6 text-center shadow-lg relative group">
-            <div class="h-12 w-12 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl mb-3">
-              ▶
-            </div>
-            <h4 class="text-sm font-semibold text-white">Vídeo Didático: Operação de Fluxo OTP</h4>
-            <p class="text-xs text-slate-400 mt-1 max-w-sm">
-              Demonstração vetorial em alta eficiência com Manim Community e FFmpeg.
-              Fluxo: <code>M = 42 (00101010)</code> &oplus; <code>K = 27 (00011011)</code> = <code>C = 49 (00110001)</code>.
-            </p>
-            <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-teal-400 font-mono">
-              <span>Roteiro Aprovado &bull; Pronto para Renderização</span>
-            </div>
-          </div>
-          <figcaption class="mt-2 text-center text-xs text-slate-400 font-medium max-w-md">
-            Figura 1: Transformação bit a bit no One-Time Pad, ilustrando o cancelamento mútuo da chave na decifragem.
-          </figcaption>
-        </figure>
-      </section>
-
-      <!-- Seção 4: Laboratório Interativo (Simulador OTP) -->
-      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 space-y-6">
-        <div class="border-b border-slate-800 pb-4">
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <span>🧪 Bancada Experimental: Simulador OTP</span>
-            <span class="text-xs px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/30 font-mono">Decimal &harr; Binário</span>
+      <!-- Seção 5: Simulador Interativo OTP -->
+      <section class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-6 space-y-6">
+        <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>Bancada de Teste: Simulador OTP</span>
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono border border-slate-300 dark:border-slate-700">Base 10</span>
           </h3>
-          <p class="text-xs text-slate-400 mt-1">
-            Insira os valores numéricos decimais de entrada para observar a conversão binária e a operação XOR passo a passo.
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Insira os valores decimais para visualizar a conversão binária e a operação XOR bit a bit.
           </p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <!-- Entrada: Mensagem Decimal -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Mensagem (Texto Claro em Base 10)
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
+              Mensagem Clara (Base 10)
             </label>
             <input
               type="number"
               id="otp-msg-input"
               value="42"
               min="0"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition"
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition"
               placeholder="Ex: 42"
             />
           </div>
 
-          <!-- Entrada: Chave Decimal -->
           <div>
             <div class="flex items-center justify-between mb-1.5">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                Chave (Em Base 10)
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
+                Chave (Base 10)
               </label>
               <button
                 type="button"
                 id="otp-btn-gen-key"
-                class="text-xs text-teal-400 hover:text-teal-300 font-mono underline"
+                class="text-xs text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white font-mono underline"
               >
-                Gerar Chave Segura
+                Gerar Chave Aleatória
               </button>
             </div>
             <input
@@ -320,139 +363,121 @@ function renderOtpTab(): string {
               id="otp-key-input"
               value="27"
               min="0"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition"
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition"
               placeholder="Ex: 27"
             />
           </div>
         </div>
 
-        <!-- Botões de Ação -->
         <div class="flex flex-wrap items-center gap-3">
           <button
             type="button"
             id="otp-btn-encrypt"
-            class="px-5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs transition shadow-sm"
+            class="px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 font-semibold text-xs transition"
           >
-            🔒 Encriptar (Base 10 &rarr; Binário &rarr; Base 10)
+            Cifrar Mensagem
           </button>
           <button
             type="button"
             id="otp-btn-decrypt"
-            class="px-5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition"
+            class="px-4 py-2 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-300 dark:border-slate-700 transition"
           >
-            🔓 Decriptar (Inversão XOR)
+            Decifrar Criptograma
           </button>
         </div>
 
-        <!-- Painel de Resultados do OTP -->
-        <div id="otp-results-panel" class="border-t border-slate-800 pt-5 space-y-4">
-          <!-- Renderizado dinamicamente por updateOtpView() -->
+        <div id="otp-results-panel" class="border-t border-slate-200 dark:border-slate-800 pt-5 space-y-4">
+          <!-- Dinâmico -->
         </div>
       </section>
 
-      <!-- Referências Bibliográficas Canônicas -->
-      <section class="border-t border-slate-800 pt-6 text-xs text-slate-400 space-y-2">
-        <h4 class="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">Referências Bibliográficas</h4>
+      <!-- Referências Bibliográficas -->
+      <section class="border-t border-slate-200 dark:border-slate-800 pt-6 text-xs text-slate-500 dark:text-slate-400 space-y-1">
+        <h4 class="font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider text-[11px] font-mono">Referências Bibliográficas</h4>
         <p>1. SHANNON, Claude E. <em>Communication Theory of Secrecy Systems</em>. Bell System Technical Journal, v. 28, n. 4, p. 656–715, 1949.</p>
-        <p>2. VERNAM, Gilbert S. <em>Cipher Printing Telegraph Systems For Secret Wire and Radio Telegraphic Communications</em>. Transactions of the American Institute of Electrical Engineers, v. 45, p. 295–301, 1926.</p>
+        <p>2. VERNAM, Gilbert S. <em>Cipher Printing Telegraph Systems For Secret Wire and Radio Telegraphic Communications</em>. Transactions of the AIEE, v. 45, p. 295–301, 1926.</p>
       </section>
     </div>
   `;
 }
 
-// Template da aba Vigenère
+// ==========================================
+// VIEW: CIFRA DE VIGENÈRE
+// ==========================================
 function renderVigenereTab(): string {
   return `
-    <div class="space-y-10 animate-fadeIn max-w-5xl mx-auto">
+    <div class="space-y-10 animate-fadeIn max-w-4xl mx-auto">
       <div>
-        <div class="text-xs font-mono text-teal-400 uppercase tracking-wider">Exercício 3 &bull; Atividade de Segurança de Sistemas</div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
-          Cifra de Vigenère (Substituição Polialfabética)
+        <div class="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Substituição Polialfabética Periódica</div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mt-1">
+          Cifra de Vigenère
         </h2>
-        <p class="text-sm text-slate-400 mt-2">
-          Implementação em TypeScript a partir do código original de João Vitor, com validação de 4 palavras e alinhamento de chave.
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+          Implementação em TypeScript a partir do código original de João Vitor, com alinhamento cíclico e critério de 4 palavras.
         </p>
       </div>
 
-      <!-- Seção 1: Contexto Histórico -->
-      <section class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
+      <section class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed space-y-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
           1. Origem Epistemológica e Contexto Histórico
         </h3>
         <p>
-          Descrita originalmente pelo criptologista italiano <strong>Giovan Battista Bellaso em 1553</strong>
-          (<em>La cifra del. Sig. Giovan Battista Bellaso</em>) e popularizada no século XIX atribuída a <strong>Blaise de Vigenère</strong>,
-          esta técnica foi considerada por mais de três séculos como <em>"le chiffre indéchiffrable"</em> (a cifra indecifrável).
-        </p>
-        <p>
-          Diferentemente da Cifra de César — que aplica um deslocamento estático único a todo o texto —, Vigenère
-          emprega múltiplos alfabetos de César de forma cíclica e periódica guiados por uma palavra-chave.
-          Isso confunde a análise de frequência direta de letras individuais, até sua posterior quebra metódica por
-          <strong>Friedrich Kasiski em 1863</strong> através do exame de repetições de n-gramas.
-        </p>
-      </section>
-
-      <!-- Seção 2: Formulação Matemática -->
-      <section class="space-y-4 text-sm text-slate-300 leading-relaxed">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          2. Formulação Matemática
-        </h3>
-        <p>
-          Seja o alfabeto mapeado nos inteiros ${tex("\\mathbb{Z}_{26} = \\{0, 1, \\dots, 25\\}")} com ${tex("A \\mapsto 0")}, ${tex("B \\mapsto 1")}, ${tex("\\dots")}, ${tex("Z \\mapsto 25")}.
-          Dada uma mensagem de comprimento ${tex("n")} e uma chave de comprimento ${tex("L")}, as operações são dadas por:
+          Apresentada originariamente pelo criptologista italiano <strong>Giovan Battista Bellaso em 1553</strong> e equivocadamente atribuída a Blaise de Vigenère no século XIX,
+          esta técnica representou a superação da cifra monoalfabética de César. Ao empregar uma palavra-chave para ciclar entre múltiplos alfabetos deslocados,
+          as frequências unigramáticas das letras são espalhadas, frustrando leituras imediatas até a introdução do Teste de Kasiski em 1863.
         </p>
 
-        <div class="math-block bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-2">
-          <div>${tex("c_i = (m_i + k_{i \\pmod L}) \\pmod{26} \\quad \\text{(Encriptação)}", true)}</div>
-          <div>${tex("m_i = (c_i - k_{i \\pmod L} + 26) \\pmod{26} \\quad \\text{(Decriptação)}", true)}</div>
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-3 rounded-md border border-slate-200 dark:border-slate-800 space-y-1">
+          <div>${tex("c_i = (m_i + k_{i \\pmod L}) \\pmod{26} \\quad \\text{(Cifragem)}", true)}</div>
+          <div>${tex("m_i = (c_i - k_{i \\pmod L} + 26) \\pmod{26} \\quad \\text{(Decifragem)}", true)}</div>
         </div>
 
-        <div class="border-l-4 border-teal-500 bg-slate-900/80 p-4 rounded-r-lg space-y-2">
-          <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider font-mono">
+        <div class="border-l-4 border-slate-500 dark:border-slate-600 bg-slate-100 dark:bg-slate-900/60 p-4 rounded-r-md space-y-2">
+          <div class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
             Critérios do Exercício Acadêmico:
           </div>
-          <ul class="list-disc list-inside space-y-1 text-xs sm:text-sm text-slate-300">
+          <ul class="list-disc list-inside space-y-1 text-xs text-slate-600 dark:text-slate-400">
             <li>A mensagem deve ser uma frase contendo <strong>no mínimo quatro palavras</strong>.</li>
-            <li>A chave é repetida ciclicamente cobrindo o tamanho da mensagem, alinhando-se estritamente aos caracteres alfabéticos.</li>
-            <li>Caracteres de pontuação e espaços em branco são preservados integralmente.</li>
+            <li>A chave é repetida ciclicamente até atingir o comprimento da mensagem, alinhando-se estritamente com caracteres alfabéticos.</li>
+            <li>Caracteres não alfabéticos e espaçamentos originais são conservados.</li>
           </ul>
         </div>
       </section>
 
-      <!-- Seção 3: Simulador Interativo Vigenère -->
-      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 space-y-6">
-        <div class="border-b border-slate-800 pb-4">
-          <h3 class="text-lg font-bold text-white flex items-center gap-2">
-            <span>🧪 Bancada Experimental: Cifra de Vigenère</span>
+      <!-- Bancada Interativa Vigenère -->
+      <section class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-6 space-y-6">
+        <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <span>Bancada de Teste: Simulador Vigenère</span>
           </h3>
-          <p class="text-xs text-slate-400 mt-1">
-            Teste a encriptação e decriptação com a regra de no mínimo quatro palavras.
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Validação em tempo real do requisito de no mínimo 4 palavras.
           </p>
         </div>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
               Mensagem (Mínimo de 4 palavras)
             </label>
             <textarea
               id="vig-msg-input"
               rows="2"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg p-3 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition"
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-3 text-xs sm:text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition"
               placeholder="Digite ao menos quatro palavras..."
             >A cifra de Vigenere e polialfabetica</textarea>
-            <div id="vig-word-counter" class="text-xs text-slate-400 mt-1 font-mono"></div>
+            <div id="vig-word-counter" class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono"></div>
           </div>
 
           <div>
-            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
               Chave de Acesso
             </label>
             <input
               type="text"
               id="vig-key-input"
               value="CHAVE"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition"
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition"
               placeholder="Ex: CHAVE"
             />
           </div>
@@ -462,183 +487,173 @@ function renderVigenereTab(): string {
           <button
             type="button"
             id="vig-btn-encrypt"
-            class="px-5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs transition"
+            class="px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 font-semibold text-xs transition"
           >
-            🔒 Encriptar
+            Cifrar Mensagem
           </button>
           <button
             type="button"
             id="vig-btn-decrypt"
-            class="px-5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition"
+            class="px-4 py-2 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-300 dark:border-slate-700 transition"
           >
-            🔓 Decriptar
+            Decifrar Criptograma
           </button>
         </div>
 
-        <div id="vig-results-panel" class="border-t border-slate-800 pt-5 space-y-4">
+        <div id="vig-results-panel" class="border-t border-slate-200 dark:border-slate-800 pt-5 space-y-4">
           <!-- Dinâmico -->
         </div>
-      </section>
-
-      <!-- Referências -->
-      <section class="border-t border-slate-800 pt-6 text-xs text-slate-400 space-y-2">
-        <h4 class="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">Referências Bibliográficas</h4>
-        <p>1. BELLASO, Giovan Battista. <em>La cifra del. Sig. Giovan Battista Bellaso</em>. Roma, 1553.</p>
-        <p>2. KASISKI, Friedrich W. <em>Die Geheimschriften und die Dechiffrir-Kunst</em>. Berlim: E. S. Mittler und Sohn, 1863.</p>
       </section>
     </div>
   `;
 }
 
-// Template da aba Cifra de Hill
+// ==========================================
+// VIEW: CIFRA DE HILL
+// ==========================================
 function renderHillTab(): string {
   return `
-    <div class="space-y-10 animate-fadeIn max-w-5xl mx-auto">
+    <div class="space-y-10 animate-fadeIn max-w-4xl mx-auto">
       <div>
-        <div class="text-xs font-mono text-teal-400 uppercase tracking-wider">Exercício 4 &bull; Atividade de Segurança de Sistemas</div>
-        <h2 class="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
-          Cifra de Hill e a Álgebra Linear Modular em ${tex("\\mathbb{Z}_{26}")}
+        <div class="text-xs font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">Criptografia Poligráfica &bull; Álgebra Linear Modular</div>
+        <h2 class="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white tracking-tight mt-1">
+          Cifra de Hill e Matrizes Inversas sobre ${tex("\\mathbb{Z}_{26}")}
         </h2>
-        <p class="text-sm text-slate-400 mt-2">
-          Substituição poligráfica fundamentada em multiplicação matricial, determinantes e inversão modular via Euclides Estendido.
+        <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mt-1">
+          Transformações lineares afins, cálculo exato de determinantes, Euclides Estendido e matriz adjunta modular.
         </p>
       </div>
 
-      <!-- Seção 1: Contexto Histórico -->
-      <section class="prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          1. Origem Epistemológica e Contexto Histórico
+      <!-- Seção 1: Contexto Histórico e Formulação -->
+      <section class="text-slate-700 dark:text-slate-300 text-xs sm:text-sm leading-relaxed space-y-4">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          1. Origem Epistemológica e Fundamentação Algébrica
         </h3>
         <p>
-          Criada pelo matemático norte-americano <strong>Lester S. Hill em 1929</strong> e divulgada no periódico
-          <em>The American Mathematical Monthly</em> com o artigo intitulado <em>"Cryptography in an Algebraic Alphabet"</em>,
-          a Cifra de Hill representou a <strong>primeira aplicação sistemática da Álgebra Linear</strong> à criptografia.
-        </p>
-        <p>
-          Enquanto as cifras anteriores operavam sobre caracteres isolados ou deslocamentos periódicos, Hill concebeu uma cifra
-          <strong>poligráfica</strong> (operando sobre blocos simultâneos de ${tex("n")} caracteres), tornando a análise de frequência
-          unigramática completamente ineficaz. O algoritmo mapeia um bloco de texto como um vetor de coordenadas e o submete a uma
-          transformação linear no espaço afim discreto ${tex("\\mathbb{Z}_{26}^n")}.
-        </p>
-      </section>
-
-      <!-- Seção 2: Formulação Matemática Rigorosa -->
-      <section class="space-y-4 text-sm text-slate-300 leading-relaxed">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          2. Formulação Matemática e Condição de Invertibilidade
-        </h3>
-        <p>
-          Seja ${tex("K \\in M_{n \\times n}(\\mathbb{Z}_{26})")} uma matriz quadrada de ordem ${tex("n")}, e seja ${tex("\\mathbf{p} = [p_1, p_2, \\dots, p_n]^T")}
-          um vetor coluna representando um bloco de ${tex("n")} letras claras. O vetor cifrado ${tex("\\mathbf{c}")} e sua decriptação são:
+          Proposta por <strong>Lester S. Hill em 1929</strong>, a Cifra de Hill marcou a entrada formal da Álgebra Linear na ciência criptológica.
+          O texto claro é particionado em blocos de ${tex("n")} caracteres, tratados como vetores de coordenadas ${tex("\\mathbf{p} = [p_1, \\dots, p_n]^T")} no espaço modular ${tex("\\mathbb{Z}_{26}^n")}.
+          A transformação linear de cifragem e sua decriptação são formuladas como:
         </p>
 
-        <div class="math-block bg-slate-900/60 p-3 rounded-lg border border-slate-800 space-y-2">
-          <div>${tex("\\mathbf{c} \\equiv K \\cdot \\mathbf{p} \\pmod{26}", true)}</div>
-          <div>${tex("\\mathbf{p} \\equiv K^{-1} \\cdot \\mathbf{c} \\pmod{26}", true)}</div>
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-3 rounded-md border border-slate-200 dark:border-slate-800 space-y-1">
+          <div>${tex("\\mathbf{c} \\equiv K \\cdot \\mathbf{p} \\pmod{26} \\quad \\text{(Cifragem)}", true)}</div>
+          <div>${tex("\\mathbf{p} \\equiv K^{-1} \\cdot \\mathbf{c} \\pmod{26} \\quad \\text{(Decifragem)}", true)}</div>
         </div>
 
         <!-- Teorema da Invertibilidade -->
-        <div class="border-l-4 border-teal-500 bg-slate-900/80 p-4 rounded-r-lg space-y-2">
-          <div class="text-xs font-semibold text-teal-400 uppercase tracking-wider font-mono">
-            Condição Teórica para a Existência da Matriz Inversa ${tex("K^{-1}")}:
+        <div class="border-l-4 border-slate-500 dark:border-slate-600 bg-slate-100 dark:bg-slate-900/60 p-4 rounded-r-md space-y-2">
+          <div class="text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
+            Condição Teórica para Invertibilidade no Anel ${tex("\\mathbb{Z}_{26}")}:
           </div>
-          <p class="text-xs sm:text-sm text-slate-300">
-            Uma matriz ${tex("K")} é inversível no anel ${tex("\\mathbb{Z}_{26}")} se, e somente se, o seu determinante for coprimo com 26:
+          <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300">
+            A matriz de chave ${tex("K")} admite inversa modular se e somente se o determinante for coprimo com 26:
           </p>
           <div class="math-block py-1">
             ${tex("\\gcd(\\det(K) \\pmod{26}, 26) = 1", true)}
           </div>
-          <p class="text-xs text-slate-400">
-            Dado que ${tex("26 = 2 \\times 13")}, a matriz só possui inversa se ${tex("\\det(K)")} <strong>não for múltiplo de 2</strong> (não pode ser par) e <strong>não for múltiplo de 13</strong>.
+          <p class="text-xs text-slate-500 dark:text-slate-400">
+            Como ${tex("26 = 2 \\times 13")}, a matriz só possui inversa se ${tex("\\det(K)")} for <strong>ímpar</strong> e <strong>não for divisível por 13</strong>.
           </p>
         </div>
 
         <p>
-          A matriz inversa modular é calculada através da fórmula da matriz adjunta (transposta dos cofatores):
+          A matriz inversa modular ${tex("K^{-1}")} é computada pela fórmula da matriz adjunta:
         </p>
-        <div class="math-block bg-slate-900/60 p-3 rounded-lg border border-slate-800">
+        <div class="math-block bg-slate-100 dark:bg-slate-900/60 p-3 rounded-md border border-slate-200 dark:border-slate-800">
           ${tex("K^{-1} \\equiv (\\det K)^{-1} \\cdot \\operatorname{adj}(K) \\pmod{26}", true)}
         </div>
-        <p>
-          Onde ${tex("(\\det K)^{-1}")} denota o inverso multiplicativo modular calculado via o <strong>Algoritmo de Euclides Estendido</strong>
-          encontrando a solução de Bézout ${tex("(\\det K) \\cdot x + 26 \\cdot y = 1")}.
-        </p>
       </section>
 
-      <!-- Seção 3: Demonstração Visual em Vídeo -->
-      <section class="space-y-3">
-        <h3 class="text-lg font-semibold text-white border-b border-slate-800 pb-2">
-          3. Demonstração Visual em Vídeo (Manim &bull; Didactic Animation)
+      <!-- Seção 2: Demonstrações Visuais em Vídeo (Dois Slots Específicos) -->
+      <section class="space-y-6">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          2. Demonstrações Visuais Didáticas (Planejamento de Vídeos)
         </h3>
-        <p class="text-xs text-slate-400">
-          A demonstração visual a seguir expõe a distorção vetorial e o mapeamento linear no plano cartesiano modular de Hill:
-        </p>
 
-        <figure class="flex flex-col items-center justify-center my-6">
-          <div class="w-full max-w-xl aspect-video overflow-hidden rounded-xl border border-slate-800 bg-slate-950 flex flex-col items-center justify-center p-6 text-center shadow-lg relative group">
-            <div class="h-12 w-12 rounded-full bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 text-xl mb-3">
-              ▶
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Vídeo 1: Codificação com Calma -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
+                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
+                  ${icons.play}
+                </div>
+                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 1: Codificação no Espaço Modular (Com Calma)</span>
+                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~16s</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <strong>Roteiro Didático:</strong> Demonstra com ritmo calmo e pausas reflexivas a transformação linear 2D. O par de letras <code>"HE" -> (7, 4)</code> é plotado como vetor no plano modular ${tex("\\mathbb{Z}_{26}^2")}, sofre multiplicação pela matriz ${tex("K")} e alcança suavemente as coordenadas <code>(7, 8) -> "HI"</code>.
+              </p>
             </div>
-            <h4 class="text-sm font-semibold text-white">Vídeo Didático: Transformação Linear em Hill 2D</h4>
-            <p class="text-xs text-slate-400 mt-1 max-w-sm">
-              Demonstração vetorial em alta eficiência com Manim Community e FFmpeg.
-              Mapeamento do digrama <code>"HE" -> (7, 4)</code>, multiplicação modular por <code>K</code> resultando em <code>"HI" -> (7, 8)</code> e reversão por <code>K^-1</code>.
-            </p>
-            <div class="mt-3 inline-flex items-center gap-2 px-3 py-1 rounded-md bg-slate-900 border border-slate-800 text-[11px] text-teal-400 font-mono">
-              <span>Roteiro Aprovado &bull; Pronto para Renderização</span>
+            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
+              Posição: Demonstração da Cifragem Matricial 2D
             </div>
           </div>
-          <figcaption class="mt-2 text-center text-xs text-slate-400 font-medium max-w-md">
-            Figura 2: Mapeamento linear de pares de letras no anel modular Z_26 e sua recuperação geométrica via matriz inversa.
-          </figcaption>
-        </figure>
+
+          <!-- Vídeo 2: Decodificação com a Inversa -->
+          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
+                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
+                  ${icons.play}
+                </div>
+                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 2: Decodificação com Matriz Inversa</span>
+                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~16s</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                <strong>Roteiro Didático:</strong> Demonstra com clareza o cálculo da matriz inversa ${tex("K^{-1} \\equiv (\\det K)^{-1} \\operatorname{adj}(K)")} e sua aplicação geométrica: a transformação inversa atuando sobre o vetor cifrado <code>(7, 8)</code> e restaurando exatamente o ponto original <code>(7, 4) -> "HE"</code>.
+              </p>
+            </div>
+            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
+              Posição: Demonstração da Decifragem por Matriz Inversa
+            </div>
+          </div>
+        </div>
       </section>
 
-      <!-- Seção 4: Laboratório Interativo (Simulador Hill) -->
-      <section class="bg-slate-900/80 border border-slate-800 rounded-xl p-6 space-y-6">
-        <div class="border-b border-slate-800 pb-4">
-          <h3 class="text-lg font-bold text-white flex items-center justify-between">
-            <span>🧪 Bancada Experimental: Cifra de Hill</span>
+      <!-- Seção 3: Simulador Interativo Hill -->
+      <section class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-6 space-y-6">
+        <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+          <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center justify-between">
+            <span>Bancada de Teste: Simulador Hill</span>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-slate-400 font-mono">Dimensão:</span>
-              <button type="button" id="hill-dim-2" class="px-2.5 py-1 text-xs rounded bg-teal-500/20 text-teal-300 border border-teal-500/40 font-mono font-bold">
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">Ordem:</span>
+              <button type="button" id="hill-dim-2" class="px-2.5 py-1 text-xs rounded bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-mono font-bold">
                 2 &times; 2
               </button>
-              <button type="button" id="hill-dim-3" class="px-2.5 py-1 text-xs rounded bg-slate-800 text-slate-400 hover:text-white border border-slate-700 font-mono">
+              <button type="button" id="hill-dim-3" class="px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 font-mono">
                 3 &times; 3
               </button>
             </div>
           </h3>
-          <p class="text-xs text-slate-400 mt-1">
-            Defina a chave via palavra ou elementos matriciais numéricos. O sistema diagnostica a invertibilidade em tempo real.
+          <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+            Diagnóstico analítico em tempo real do determinante e matriz inversa modular.
           </p>
         </div>
 
-        <!-- Definição da Chave -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+              <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
                 Chave em Palavra
               </label>
-              <span class="text-[11px] text-slate-400 font-mono" id="hill-key-len-hint">4 letras para 2x2</span>
+              <span class="text-[11px] text-slate-500 font-mono" id="hill-key-len-hint">4 letras para 2x2</span>
             </div>
             <input
               type="text"
               id="hill-word-key"
               value="DDCF"
-              class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition uppercase"
+              class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition uppercase"
               placeholder="Ex: DDCF"
             />
-            <p class="text-[11px] text-slate-400">
-              Ou edite os valores numéricos diretamente na grade ao lado:
+            <p class="text-[11px] text-slate-500 dark:text-slate-400">
+              Ou ajuste os coeficientes diretamente na matriz numérica ao lado:
             </p>
           </div>
 
-          <!-- Grade da Matriz K -->
           <div>
-            <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
-              Matriz de Chave ${tex("K")} (mod 26)
+            <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2 font-mono">
+              Matriz de Chave K (mod 26)
             </label>
             <div id="hill-matrix-grid" class="grid gap-2 font-mono">
               <!-- Renderizado dinamicamente -->
@@ -647,20 +662,20 @@ function renderHillTab(): string {
         </div>
 
         <!-- Diagnóstico da Matriz em Tempo Real -->
-        <div id="hill-diagnostic-panel" class="bg-slate-950 border border-slate-800 rounded-lg p-4 space-y-2 text-xs font-mono">
+        <div id="hill-diagnostic-panel" class="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-md p-4 space-y-2 text-xs font-mono">
           <!-- Renderizado dinamicamente -->
         </div>
 
-        <!-- Entrada da Mensagem -->
+        <!-- Mensagem de Entrada -->
         <div class="space-y-3">
-          <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+          <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider font-mono">
             Mensagem para Cifragem / Decifragem
           </label>
           <input
             type="text"
             id="hill-msg-input"
             value="CRIPTO"
-            class="w-full bg-slate-950 border border-slate-800 rounded-lg px-3.5 py-2.5 text-sm text-white font-mono focus:outline-none focus:border-teal-500 transition uppercase"
+            class="w-full bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md px-3.5 py-2 text-sm text-slate-900 dark:text-white font-mono focus:outline-none focus:border-slate-500 transition uppercase"
             placeholder="Ex: CRIPTO"
           />
         </div>
@@ -669,29 +684,22 @@ function renderHillTab(): string {
           <button
             type="button"
             id="hill-btn-encrypt"
-            class="px-5 py-2 rounded-lg bg-teal-600 hover:bg-teal-500 text-white font-semibold text-xs transition"
+            class="px-4 py-2 rounded-md bg-slate-900 hover:bg-slate-800 dark:bg-slate-100 dark:hover:bg-white text-white dark:text-slate-900 font-semibold text-xs transition"
           >
-            🔒 Encriptar em Blocos
+            Cifrar em Blocos
           </button>
           <button
             type="button"
             id="hill-btn-decrypt"
-            class="px-5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold text-xs border border-slate-700 transition"
+            class="px-4 py-2 rounded-md bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs border border-slate-300 dark:border-slate-700 transition"
           >
-            🔓 Decriptar com Matriz Inversa
+            Decifrar com Inversa K^-1
           </button>
         </div>
 
-        <div id="hill-results-panel" class="border-t border-slate-800 pt-5 space-y-4">
+        <div id="hill-results-panel" class="border-t border-slate-200 dark:border-slate-800 pt-5 space-y-4">
           <!-- Dinâmico -->
         </div>
-      </section>
-
-      <!-- Referências -->
-      <section class="border-t border-slate-800 pt-6 text-xs text-slate-400 space-y-2">
-        <h4 class="font-semibold text-slate-300 uppercase tracking-wider text-[11px]">Referências Bibliográficas</h4>
-        <p>1. HILL, Lester S. <em>Cryptography in an Algebraic Alphabet</em>. The American Mathematical Monthly, v. 36, n. 6, p. 306–312, 1929.</p>
-        <p>2. DUMMIT, David S.; FOOTE, Richard M. <em>Abstract Algebra</em>. 3. ed. Hoboken: John Wiley & Sons, 2004.</p>
       </section>
     </div>
   `;
@@ -710,7 +718,6 @@ function setupTabs(): void {
     });
   });
 
-  // Links internos de pulo
   document.querySelectorAll<HTMLButtonElement>('.nav-jump').forEach((btn) => {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-jump');
@@ -727,9 +734,9 @@ function updateTabButtons(): void {
   navTabs.forEach((btn) => {
     const tab = btn.getAttribute('data-tab');
     if (tab === activeTab) {
-      btn.className = 'tab-btn px-3 py-1.5 rounded-md transition bg-teal-500/10 text-teal-300 border border-teal-500/30 font-medium';
+      btn.className = 'tab-btn px-3 py-1.5 rounded-md transition bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-medium';
     } else {
-      btn.className = 'tab-btn px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition font-medium';
+      btn.className = 'tab-btn px-3 py-1.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition font-medium';
     }
   });
 }
@@ -738,7 +745,6 @@ function updateTabButtons(): void {
 // CONTROLADORES DOS SIMULADORES
 // ==========================================
 
-// Controlador do OTP
 function setupOtpSimulator(): void {
   const msgInput = document.getElementById('otp-msg-input') as HTMLInputElement | null;
   const keyInput = document.getElementById('otp-key-input') as HTMLInputElement | null;
@@ -756,56 +762,51 @@ function setupOtpSimulator(): void {
       const enc = OtpCipher.encrypt(m, k);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-teal-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-teal-400 font-bold">
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+            <span class="text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 font-bold">
               Resultado da Cifragem OTP
             </span>
-            <span class="text-xs px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/30 font-mono">
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
               Alinhamento: ${enc.bitLength} bits
             </span>
           </div>
 
-          <!-- Tabela de Alinhamento de Bits -->
           <div class="overflow-x-auto">
-            <table class="w-full text-center font-mono text-xs sm:text-sm border-collapse">
+            <table class="w-full text-center font-mono text-xs border-collapse">
               <thead>
-                <tr class="text-slate-400 border-b border-slate-800">
+                <tr class="text-slate-500 border-b border-slate-200 dark:border-slate-800">
                   <th class="text-left py-1.5 px-3">Variável</th>
                   <th class="py-1.5 px-3">Base 10</th>
-                  <th class="py-1.5 px-3 text-right">Representação Binária (Bits)</th>
+                  <th class="py-1.5 px-3 text-right">Representação Binária</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/60">
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
                 <tr>
-                  <td class="text-left py-2 px-3 text-slate-300 font-sans">Mensagem Clara ${tex("M")}</td>
-                  <td class="py-2 px-3 font-bold text-white">${enc.plaintextDecimal.toString()}</td>
-                  <td class="py-2 px-3 text-right tracking-widest text-teal-300">${enc.plaintextBinary}</td>
+                  <td class="text-left py-2 px-3 text-slate-700 dark:text-slate-300 font-sans">Mensagem Clara M</td>
+                  <td class="py-2 px-3 font-bold">${enc.plaintextDecimal.toString()}</td>
+                  <td class="py-2 px-3 text-right tracking-widest text-slate-600 dark:text-slate-300">${enc.plaintextBinary}</td>
                 </tr>
                 <tr>
-                  <td class="text-left py-2 px-3 text-slate-300 font-sans">Chave ${tex("K")}</td>
-                  <td class="py-2 px-3 font-bold text-amber-400">${enc.keyDecimal.toString()}</td>
-                  <td class="py-2 px-3 text-right tracking-widest text-amber-300">${enc.keyBinary}</td>
+                  <td class="text-left py-2 px-3 text-slate-700 dark:text-slate-300 font-sans">Chave K</td>
+                  <td class="py-2 px-3 font-bold text-amber-600 dark:text-amber-400">${enc.keyDecimal.toString()}</td>
+                  <td class="py-2 px-3 text-right tracking-widest text-amber-600 dark:text-amber-300">${enc.keyBinary}</td>
                 </tr>
-                <tr class="bg-teal-950/30 text-white font-bold">
-                  <td class="text-left py-2.5 px-3 font-sans text-teal-300">Criptograma ${tex("C = M \\oplus K")}</td>
-                  <td class="py-2.5 px-3 text-emerald-400 text-base">${enc.ciphertextDecimal.toString()}</td>
-                  <td class="py-2.5 px-3 text-right tracking-widest text-emerald-300 text-base">${enc.ciphertextBinary}</td>
+                <tr class="bg-slate-100 dark:bg-slate-900/60 font-bold">
+                  <td class="text-left py-2.5 px-3 font-sans text-slate-900 dark:text-white">Criptograma C = M XOR K</td>
+                  <td class="py-2.5 px-3 text-slate-900 dark:text-white text-sm">${enc.ciphertextDecimal.toString()}</td>
+                  <td class="py-2.5 px-3 text-right tracking-widest text-slate-900 dark:text-white text-sm">${enc.ciphertextBinary}</td>
                 </tr>
               </tbody>
             </table>
-          </div>
-
-          <div class="p-3 bg-slate-900/60 rounded border border-slate-800 text-xs text-slate-400 leading-relaxed">
-            <strong>Critério do Exercício Atendido:</strong> A mensagem de entrada ${enc.plaintextDecimal.toString()} e a chave ${enc.keyDecimal.toString()} foram introduzidas em base 10, convertidas internamente para cadeias binárias de ${enc.bitLength} bits, submetidas ao operador XOR bit a bit, e o resultado final foi reconvertido para a base decimal 10 (${enc.ciphertextDecimal.toString()}).
           </div>
         </div>
       `;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
-          Erro na encriptação: ${msg}
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
+          Erro: ${msg}
         </div>
       `;
     }
@@ -818,40 +819,40 @@ function setupOtpSimulator(): void {
       const dec = OtpCipher.decrypt(c, k);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+            <span class="text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 font-bold">
               Resultado da Decriptação OTP
             </span>
-            <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/30 font-mono">
-              Simetria Reversa
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+              Simetria Involutiva
             </span>
           </div>
 
           <div class="overflow-x-auto">
-            <table class="w-full text-center font-mono text-xs sm:text-sm border-collapse">
+            <table class="w-full text-center font-mono text-xs border-collapse">
               <thead>
-                <tr class="text-slate-400 border-b border-slate-800">
+                <tr class="text-slate-500 border-b border-slate-200 dark:border-slate-800">
                   <th class="text-left py-1.5 px-3">Variável</th>
                   <th class="py-1.5 px-3">Base 10</th>
-                  <th class="py-1.5 px-3 text-right">Representação Binária (Bits)</th>
+                  <th class="py-1.5 px-3 text-right">Representação Binária</th>
                 </tr>
               </thead>
-              <tbody class="divide-y divide-slate-800/60">
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
                 <tr>
-                  <td class="text-left py-2 px-3 text-slate-300 font-sans">Texto Cifrado ${tex("C")}</td>
-                  <td class="py-2 px-3 font-bold text-white">${dec.ciphertextDecimal.toString()}</td>
-                  <td class="py-2 px-3 text-right tracking-widest text-slate-300">${dec.ciphertextBinary}</td>
+                  <td class="text-left py-2 px-3 text-slate-700 dark:text-slate-300 font-sans">Texto Cifrado C</td>
+                  <td class="py-2 px-3 font-bold">${dec.ciphertextDecimal.toString()}</td>
+                  <td class="py-2 px-3 text-right tracking-widest text-slate-600 dark:text-slate-300">${dec.ciphertextBinary}</td>
                 </tr>
                 <tr>
-                  <td class="text-left py-2 px-3 text-slate-300 font-sans">Chave ${tex("K")}</td>
-                  <td class="py-2 px-3 font-bold text-amber-400">${dec.keyDecimal.toString()}</td>
-                  <td class="py-2 px-3 text-right tracking-widest text-amber-300">${dec.keyBinary}</td>
+                  <td class="text-left py-2 px-3 text-slate-700 dark:text-slate-300 font-sans">Chave K</td>
+                  <td class="py-2 px-3 font-bold text-amber-600 dark:text-amber-400">${dec.keyDecimal.toString()}</td>
+                  <td class="py-2 px-3 text-right tracking-widest text-amber-600 dark:text-amber-300">${dec.keyBinary}</td>
                 </tr>
-                <tr class="bg-emerald-950/30 text-white font-bold">
-                  <td class="text-left py-2.5 px-3 font-sans text-emerald-300">Mensagem Recuperada ${tex("M = C \\oplus K")}</td>
-                  <td class="py-2.5 px-3 text-emerald-400 text-base">${dec.recoveredDecimal.toString()}</td>
-                  <td class="py-2.5 px-3 text-right tracking-widest text-emerald-300 text-base">${dec.recoveredBinary}</td>
+                <tr class="bg-slate-100 dark:bg-slate-900/60 font-bold">
+                  <td class="text-left py-2.5 px-3 font-sans text-slate-900 dark:text-white">Mensagem Recuperada M</td>
+                  <td class="py-2.5 px-3 text-slate-900 dark:text-white text-sm">${dec.recoveredDecimal.toString()}</td>
+                  <td class="py-2.5 px-3 text-right tracking-widest text-slate-900 dark:text-white text-sm">${dec.recoveredBinary}</td>
                 </tr>
               </tbody>
             </table>
@@ -861,8 +862,8 @@ function setupOtpSimulator(): void {
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
-          Erro na decriptação: ${msg}
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
+          Erro: ${msg}
         </div>
       `;
     }
@@ -881,12 +882,9 @@ function setupOtpSimulator(): void {
 
   btnEncrypt?.addEventListener('click', runEncryption);
   btnDecrypt?.addEventListener('click', runDecryption);
-
-  // Inicializar com a primeira encriptação
   runEncryption();
 }
 
-// Controlador de Vigenère
 function setupVigenereSimulator(): void {
   const msgInput = document.getElementById('vig-msg-input') as HTMLTextAreaElement | null;
   const keyInput = document.getElementById('vig-key-input') as HTMLInputElement | null;
@@ -904,8 +902,8 @@ function setupVigenereSimulator(): void {
 
     if (wordCounter) {
       wordCounter.innerHTML = isValid
-        ? `<span class="text-emerald-400 font-semibold">✓ ${count} palavras (Requisito de &ge; 4 palavras atendido)</span>`
-        : `<span class="text-amber-400 font-semibold">⚠ ${count} palavras (Mínimo exigido: 4 palavras)</span>`;
+        ? `<span class="text-emerald-600 dark:text-emerald-400 font-semibold font-mono">${icons.check} ${count} palavras (Requisito de no mínimo 4 palavras atendido)</span>`
+        : `<span class="text-amber-600 dark:text-amber-400 font-semibold font-mono">${icons.alert} ${count} palavras (Mínimo exigido: 4 palavras)</span>`;
     }
   }
 
@@ -920,33 +918,21 @@ function setupVigenereSimulator(): void {
       const cipher = vigenereEncrypt(msg, key);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-teal-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-teal-400 font-bold">
-              Resultado da Cifragem Vigenère
-            </span>
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-3 font-mono text-xs">
+          <div>
+            <span class="text-slate-500 block mb-1">Chave Alinhada (Caractere a Caractere):</span>
+            <div class="p-2 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-amber-600 dark:text-amber-300 break-all">${keyAligned}</div>
           </div>
-
-          <div class="space-y-3 font-mono text-xs sm:text-sm">
-            <div>
-              <span class="text-slate-400 text-xs block mb-1">Mensagem Original:</span>
-              <div class="p-2.5 bg-slate-900 rounded border border-slate-800 text-white break-all">${msg}</div>
-            </div>
-            <div>
-              <span class="text-slate-400 text-xs block mb-1">Chave Alinhada (Letra a Letra):</span>
-              <div class="p-2.5 bg-slate-900 rounded border border-slate-800 text-amber-300 break-all">${keyAligned}</div>
-            </div>
-            <div>
-              <span class="text-slate-400 text-xs block mb-1">Texto Cifrado Resultante:</span>
-              <div class="p-3 bg-teal-950/30 rounded border border-teal-800/60 text-teal-200 font-bold break-all text-base">${cipher}</div>
-            </div>
+          <div>
+            <span class="text-slate-500 block mb-1">Criptograma Resultante:</span>
+            <div class="p-2.5 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold break-all text-sm">${cipher}</div>
           </div>
         </div>
       `;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
           Erro: ${msg}
         </div>
       `;
@@ -960,25 +946,17 @@ function setupVigenereSimulator(): void {
       const plain = vigenereDecrypt(cipher, key);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">
-              Resultado da Decriptação Vigenère
-            </span>
-          </div>
-
-          <div class="space-y-3 font-mono text-xs sm:text-sm">
-            <div>
-              <span class="text-slate-400 text-xs block mb-1">Texto Decriptado:</span>
-              <div class="p-3 bg-emerald-950/30 rounded border border-emerald-800/60 text-emerald-300 font-bold break-all text-base">${plain}</div>
-            </div>
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-3 font-mono text-xs">
+          <div>
+            <span class="text-slate-500 block mb-1">Texto Decifrado:</span>
+            <div class="p-2.5 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold break-all text-sm">${plain}</div>
           </div>
         </div>
       `;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
           Erro: ${msg}
         </div>
       `;
@@ -990,7 +968,6 @@ function setupVigenereSimulator(): void {
   runEncryption();
 }
 
-// Controlador da Cifra de Hill
 let hillCurrentDim: 2 | 3 = 2;
 let hillMatrixValues: number[][] = [
   [3, 3],
@@ -1022,7 +999,7 @@ function setupHillSimulator(): void {
         input.min = '0';
         input.max = '25';
         input.value = (hillMatrixValues[r]?.[c] ?? 0).toString();
-        input.className = 'w-full bg-slate-900 border border-slate-800 rounded p-2 text-center text-sm text-white font-mono focus:border-teal-500 focus:outline-none';
+        input.className = 'w-full bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded p-2 text-center text-xs sm:text-sm text-slate-900 dark:text-white font-mono focus:border-slate-500 focus:outline-none';
         input.addEventListener('input', () => {
           const val = ModularArithmetic.mod(parseInt(input.value || '0', 10));
           if (!hillMatrixValues[r]) hillMatrixValues[r] = [];
@@ -1090,43 +1067,43 @@ function setupHillSimulator(): void {
     }
 
     diagnosticPanel!.innerHTML = `
-      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
-        <span class="text-slate-400">Diagnóstico Algébrico:</span>
+      <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
+        <span class="text-slate-500 dark:text-slate-400 font-mono">Diagnóstico Algébrico:</span>
         ${
           isInvertible
-            ? `<span class="px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-700/60 text-emerald-400 font-bold">✓ Matriz Inversível em Z_26 (Válida)</span>`
-            : `<span class="px-2 py-0.5 rounded bg-red-950/60 border border-red-700/60 text-red-400 font-bold">✗ Matriz Singular em Z_26 (Não Inversível)</span>`
+            ? `<span class="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 font-bold font-mono">${icons.check} Matriz Inversível em Z_26</span>`
+            : `<span class="px-2 py-0.5 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-400 font-bold font-mono">${icons.alert} Matriz Singular (Não Inversível)</span>`
         }
       </div>
 
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 text-xs">
         <div>
-          <span class="text-slate-400 block">det(K) bruto:</span>
-          <span class="text-white font-bold">${rawDet}</span>
+          <span class="text-slate-500 block">det(K) bruto:</span>
+          <span class="text-slate-900 dark:text-white font-bold">${rawDet}</span>
         </div>
         <div>
-          <span class="text-slate-400 block">det(K) mod 26:</span>
-          <span class="text-teal-300 font-bold">${modDet}</span>
+          <span class="text-slate-500 block">det(K) mod 26:</span>
+          <span class="text-slate-900 dark:text-white font-bold">${modDet}</span>
         </div>
         <div>
-          <span class="text-slate-400 block">mdc(det, 26):</span>
-          <span class="font-bold ${gcd === 1 ? 'text-emerald-400' : 'text-red-400'}">${gcd}</span>
+          <span class="text-slate-500 block">mdc(det, 26):</span>
+          <span class="font-bold ${gcd === 1 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400'}">${gcd}</span>
         </div>
         <div>
-          <span class="text-slate-400 block">det^-1 mod 26:</span>
-          <span class="text-amber-300 font-bold">${detInvStr}</span>
+          <span class="text-slate-500 block">det^-1 mod 26:</span>
+          <span class="text-slate-900 dark:text-white font-bold">${detInvStr}</span>
         </div>
       </div>
 
       ${
         !isInvertible
-          ? `<div class="p-2 rounded bg-red-950/30 border border-red-800/40 text-red-300 text-[11px] mt-2">
-              Aviso: mdc(${modDet}, 26) = ${gcd} &ne; 1. O determinante compartilha fatores com 26 (2 ou 13), impedindo a inversão da matriz. A decriptação é matematicamente impossível com esta chave.
+          ? `<div class="p-2.5 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-[11px] mt-2 leading-relaxed">
+              O determinante compartilha fatores com 26 (mdc = ${gcd}). A matriz não admite inverso multiplicativo em Z_26, inviabilizando a decriptação.
             </div>`
           : invMatrix
-          ? `<div class="mt-3 pt-2 border-t border-slate-900">
-              <span class="text-slate-400 block mb-1">Matriz Inversa Calculada K^-1 (mod 26):</span>
-              <div class="inline-block p-2 rounded bg-slate-900 border border-slate-800 text-emerald-300 font-mono text-xs">
+          ? `<div class="mt-3 pt-2 border-t border-slate-200 dark:border-slate-800">
+              <span class="text-slate-500 block mb-1">Matriz Inversa Calculada K^-1 (mod 26):</span>
+              <div class="inline-block p-2 rounded bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 font-mono text-xs">
                 ${invMatrix.map((row) => `[ ${row.join(', ')} ]`).join('<br>')}
               </div>
             </div>`
@@ -1143,8 +1120,8 @@ function setupHillSimulator(): void {
       [3, 3],
       [2, 5],
     ];
-    btnDim2.className = 'px-2.5 py-1 text-xs rounded bg-teal-500/20 text-teal-300 border border-teal-500/40 font-mono font-bold';
-    btnDim3!.className = 'px-2.5 py-1 text-xs rounded bg-slate-800 text-slate-400 hover:text-white border border-slate-700 font-mono';
+    btnDim2.className = 'px-2.5 py-1 text-xs rounded bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-mono font-bold';
+    btnDim3!.className = 'px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 font-mono';
     if (keyLenHint) keyLenHint.textContent = '4 letras para 2x2';
     updateWordKeyFromMatrix();
     renderMatrixInputs();
@@ -1157,8 +1134,8 @@ function setupHillSimulator(): void {
       [0, 1, 4],
       [5, 6, 0],
     ];
-    btnDim3.className = 'px-2.5 py-1 text-xs rounded bg-teal-500/20 text-teal-300 border border-teal-500/40 font-mono font-bold';
-    btnDim2!.className = 'px-2.5 py-1 text-xs rounded bg-slate-800 text-slate-400 hover:text-white border border-slate-700 font-mono';
+    btnDim3.className = 'px-2.5 py-1 text-xs rounded bg-slate-900 text-white dark:bg-slate-100 dark:text-slate-900 font-mono font-bold';
+    btnDim2!.className = 'px-2.5 py-1 text-xs rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white border border-slate-200 dark:border-slate-700 font-mono';
     if (keyLenHint) keyLenHint.textContent = '9 letras para 3x3';
     updateWordKeyFromMatrix();
     renderMatrixInputs();
@@ -1170,66 +1147,62 @@ function setupHillSimulator(): void {
       const enc = HillCipher.encrypt(text, hillMatrixValues);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-teal-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-teal-400 font-bold">
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
+            <span class="text-xs font-mono uppercase tracking-wider text-slate-700 dark:text-slate-300 font-bold">
               Resultado da Cifragem de Hill
             </span>
-            <span class="text-xs px-2 py-0.5 rounded bg-teal-500/10 text-teal-300 border border-teal-500/30 font-mono">
-              ${enc.blockTransformations.length} Blocos &bull; Padding: ${enc.paddingCount} caractere(s)
+            <span class="text-[11px] px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-mono">
+              ${enc.blockTransformations.length} Blocos &bull; Padding: ${enc.paddingCount} char
             </span>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
             <div>
-              <span class="text-slate-400 block mb-1">Texto Claro Formatado (com Padding 'X'):</span>
-              <div class="p-2.5 bg-slate-900 rounded border border-slate-800 text-white text-sm tracking-wider">${enc.plaintextFormatted}</div>
+              <span class="text-slate-500 block mb-1">Texto Claro com Padding 'X':</span>
+              <div class="p-2 bg-white dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm tracking-wider">${enc.plaintextFormatted}</div>
             </div>
             <div>
-              <span class="text-slate-400 block mb-1">Texto Cifrado Resultante:</span>
-              <div class="p-2.5 bg-teal-950/40 rounded border border-teal-800/60 text-teal-300 text-sm font-bold tracking-wider">${enc.ciphertext}</div>
+              <span class="text-slate-500 block mb-1">Criptograma Resultante:</span>
+              <div class="p-2 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white text-sm font-bold tracking-wider">${enc.ciphertext}</div>
             </div>
           </div>
 
-          <!-- Tabela de Transformação Bloco a Bloco -->
-          <div>
-            <span class="text-xs text-slate-400 font-semibold block mb-2">Transformação Matricial por Vetores:</span>
-            <div class="overflow-x-auto">
-              <table class="w-full text-center font-mono text-xs border-collapse">
-                <thead>
-                  <tr class="text-slate-400 border-b border-slate-800">
-                    <th class="py-1 px-2 text-left">Bloco</th>
-                    <th class="py-1 px-2">Digrama/Trigrama</th>
-                    <th class="py-1 px-2">Vetor Entrada P</th>
-                    <th class="py-1 px-2">Vetor C = K*P (mod 26)</th>
-                    <th class="py-1 px-2 text-right">Bloco Cifrado</th>
+          <div class="overflow-x-auto">
+            <table class="w-full text-center font-mono text-xs border-collapse">
+              <thead>
+                <tr class="text-slate-500 border-b border-slate-200 dark:border-slate-800">
+                  <th class="py-1 px-2 text-left">Bloco</th>
+                  <th class="py-1 px-2">Digrama</th>
+                  <th class="py-1 px-2">Vetor Entrada P</th>
+                  <th class="py-1 px-2">Vetor C = K*P (mod 26)</th>
+                  <th class="py-1 px-2 text-right">Bloco Cifrado</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200 dark:divide-slate-800/60">
+                ${enc.blockTransformations
+                  .map(
+                    (b) => `
+                  <tr>
+                    <td class="py-2 px-2 text-left text-slate-500">#${b.blockIndex + 1}</td>
+                    <td class="py-2 px-2 font-bold">${b.inputChars}</td>
+                    <td class="py-2 px-2 text-slate-600 dark:text-slate-300">[ ${b.inputVector.join(', ')} ]</td>
+                    <td class="py-2 px-2 font-bold text-slate-900 dark:text-white">[ ${b.outputVector.join(', ')} ]</td>
+                    <td class="py-2 px-2 text-right font-bold text-slate-900 dark:text-white">${b.outputChars}</td>
                   </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-800/60">
-                  ${enc.blockTransformations
-                    .map(
-                      (b) => `
-                    <tr>
-                      <td class="py-2 px-2 text-left text-slate-400">#${b.blockIndex + 1}</td>
-                      <td class="py-2 px-2 font-bold text-white">${b.inputChars}</td>
-                      <td class="py-2 px-2 text-teal-300">[ ${b.inputVector.join(', ')} ]</td>
-                      <td class="py-2 px-2 text-emerald-300 font-bold">[ ${b.outputVector.join(', ')} ]</td>
-                      <td class="py-2 px-2 text-right font-bold text-teal-400">${b.outputChars}</td>
-                    </tr>
-                  `
-                    )
-                    .join('')}
-                </tbody>
-              </table>
-            </div>
+                `
+                  )
+                  .join('')}
+              </tbody>
+            </table>
           </div>
         </div>
       `;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
-          Erro na encriptação de Hill: ${msg}
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
+          Erro: ${msg}
         </div>
       `;
     }
@@ -1241,26 +1214,18 @@ function setupHillSimulator(): void {
       const dec = HillCipher.decrypt(text, hillMatrixValues);
 
       resultsPanel!.innerHTML = `
-        <div class="bg-slate-950 border border-emerald-500/40 rounded-xl p-5 space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span class="text-xs font-mono uppercase tracking-wider text-emerald-400 font-bold">
-              Resultado da Decriptação de Hill
-            </span>
-          </div>
-
-          <div class="space-y-3 font-mono text-xs sm:text-sm">
-            <div>
-              <span class="text-slate-400 text-xs block mb-1">Texto Decriptado com Sucesso:</span>
-              <div class="p-3 bg-emerald-950/30 rounded border border-emerald-800/60 text-emerald-300 font-bold break-all text-base">${dec}</div>
-            </div>
+        <div class="bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-3 font-mono text-xs">
+          <div>
+            <span class="text-slate-500 block mb-1">Texto Decifrado via Inversa K^-1:</span>
+            <div class="p-2.5 bg-slate-100 dark:bg-slate-900 rounded border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold break-all text-sm">${dec}</div>
           </div>
         </div>
       `;
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : String(err);
       resultsPanel!.innerHTML = `
-        <div class="p-4 rounded-lg bg-red-950/40 border border-red-800/60 text-red-300 text-xs font-mono">
-          Erro na decriptação de Hill: ${msg}
+        <div class="p-3 rounded bg-red-500/10 border border-red-500/30 text-red-600 dark:text-red-300 text-xs font-mono">
+          Erro: ${msg}
         </div>
       `;
     }
@@ -1273,7 +1238,6 @@ function setupHillSimulator(): void {
   runEncryption();
 }
 
-// Renderizador da tela principal
 function renderActiveTab(): void {
   const app = document.getElementById('app');
   if (!app) return;
@@ -1303,7 +1267,7 @@ function renderActiveTab(): void {
   setupTabs();
 }
 
-// Iniciar aplicação
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   renderActiveTab();
 });
