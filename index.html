@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratório de Criptografia Clássica e Moderna | SEGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+    <!-- Header Principal -->
+    <header class="border-b border-slate-800/80 bg-slate-900/60 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-3">
+          <div class="h-9 w-9 rounded-lg bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 font-mono font-bold text-lg">
+            🔐
+          </div>
+          <div>
+            <h1 class="text-base sm:text-lg font-semibold tracking-tight text-white flex items-center gap-2">
+              Laboratório de Criptografia
+              <span class="text-xs px-2 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-800/60 font-mono">JCRSEGS</span>
+            </h1>
+            <p class="text-xs text-slate-400">Segurança de Sistemas &bull; Prof. Tardelli Stekel</p>
+          </div>
+        </div>
+
+        <!-- Abas de Navegação -->
+        <nav class="flex items-center gap-1.5 p-1 bg-slate-950/70 border border-slate-800 rounded-lg text-xs sm:text-sm font-medium" id="nav-tabs">
+          <button data-tab="visao-geral" class="tab-btn px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition active-tab bg-teal-500/10 text-teal-300 border border-teal-500/30">
+            📋 Visão Geral
+          </button>
+          <button data-tab="otp" class="tab-btn px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition">
+            1. One-Time Pad
+          </button>
+          <button data-tab="vigenere" class="tab-btn px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition">
+            3. Vigenère
+          </button>
+          <button data-tab="hill" class="tab-btn px-3 py-1.5 rounded-md text-slate-400 hover:text-white transition">
+            4. Cifra de Hill
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Conteúdo Dinâmico -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="app">
+      <!-- Injetado via main.ts -->
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-400">
+      <div class="max-w-7xl mx-auto px-4 space-y-2">
+        <p>Projeto de Segurança de Sistemas &bull; Análise e Desenvolvimento de Sistemas &bull; IFSP</p>
+        <p class="text-slate-400">Desenvolvido em TypeScript &bull; Hospedado no GitHub Pages &bull; 2026</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,35 @@
+@import "katex/dist/katex.min.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased font-sans selection:bg-teal-500 selection:text-white;
+  }
+}
+
+.math-block {
+  @apply overflow-x-auto py-2 my-2 text-center text-slate-100;
+}
+
+.math-inline {
+  @apply inline-block px-1 text-slate-100;
+}
+
+/* Custom scrollbars for matrix and bit tables */
+::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(51, 65, 85, 0.8);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 184, 166, 0.8);
+}
