@@ -290,7 +290,7 @@ function renderOtpTab(): string {
               </video>
             </div>
             <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação vetorial: decomposição de <i>M=42</i> e <i>K=27</i> em 8 bits, escaneamento bit a bit da operação XOR gerando <i>C=49</i> e simetria de decifragem <i>49 &oplus; 27 = 42</i>.
+              Animação passo a passo: cifragem completa de <i>M=42</i> com <i>K=27</i> gerando <i>C=49</i>, seguida pela demonstração visual da decifragem simétrica <i>C &oplus; K</i> recuperando com exatidão a mensagem original <i>M=42</i>.
             </figcaption>
           </figure>
         </div>
@@ -308,7 +308,7 @@ function renderOtpTab(): string {
               </video>
             </div>
             <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação analítica: quando a mesma chave <i>K</i> cifra dois textos, <i>C₁ &oplus; C₂</i> provoca a colisão e cancelamento mútuo da chave (<i>K &oplus; K = 0</i>), expondo <i>M₁ &oplus; M₂</i>.
+              Animação analítica: interceptação prática de dois canais cifrados com a mesma chave <i>K</i>, cancelamento mútuo da chave (<i>K &oplus; K = 0</i>) ao calcular <i>C₁ &oplus; C₂</i> e recuperação prática das mensagens sem conhecer <i>K</i>.
             </figcaption>
           </figure>
         </div>
@@ -579,7 +579,7 @@ function renderHillTab(): string {
               </video>
             </div>
             <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação geométrica: vetorização do par <i>"HE" &rarr; p=(7, 4)</i>, produto matricial <i>K &bull; p (mod 26)</i> com ritmo calmo no plano discreto e deslocamento suave até <i>c=(7, 8) &rarr; "HI"</i>.
+              Animação vetorial calma: codificação detalhada do 1º bloco <i>"CR" &rarr; p₁=(2, 17) &rarr; c₁=(5, 11) &rarr; "FL"</i> no espaço discreto ℤ₂₆, seguida pela transformação sequencial dos blocos seguintes gerando o criptograma <i>"FLRNVE"</i> a partir de <i>"CRIPTO"</i>.
             </figcaption>
           </figure>
         </div>
@@ -597,7 +597,7 @@ function renderHillTab(): string {
               </video>
             </div>
             <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação analítica: cálculo da matriz inversa <i>K⁻¹</i> e aplicação da transformação reversa sobre o vetor cifrado <i>(7, 8)</i>, restaurando com exatidão as coordenadas <i>(7, 4) &rarr; "HE"</i>.
+              Animação analítica: decodificação detalhada do 1º bloco <i>c₁=(5, 11)</i> multiplicando pela matriz inversa <i>K⁻¹</i> restaurando <i>(2, 17) &rarr; "CR"</i>, com reversão progressiva dos blocos seguintes e recuperação integral da palavra <i>"CRIPTO"</i>.
             </figcaption>
           </figure>
         </div>
