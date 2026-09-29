@@ -271,50 +271,46 @@ function renderOtpTab(): string {
         </div>
       </section>
 
-      <!-- Seção 4: Demonstrações Visuais em Vídeo (Dois Slots Específicos) -->
-      <section class="space-y-6">
+      <!-- Seção 4: Demonstrações Visuais Didáticas -->
+      <section class="space-y-8">
         <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
-          4. Demonstrações Visuais Didáticas (Planejamento de Vídeos)
+          4. Demonstrações Visuais em Vídeo
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Vídeo 1: Passo a Passo do Algoritmo -->
-          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
-            <div class="space-y-3">
-              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
-                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
-                  ${icons.play}
-                </div>
-                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 1: Cifragem Passo a Passo</span>
-                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~14s</span>
-              </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                <strong>Roteiro Didático:</strong> Exibe com clareza a entrada de ${tex("M=42")} e ${tex("K=27")}, sua conversão explícita em cadeias de 8 bits (<code>00101010</code> e <code>00011011</code>), o scanner do operador XOR iluminando bits diferentes, a geração de ${tex("C=49")} e a decifragem reversa simétrica.
-              </p>
+        <!-- Vídeo 1: Cifragem e Decifragem Passo a Passo -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 1: Cifragem e Decifragem Passo a Passo (Decimal &harr; Binário &harr; XOR)
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/otpstepbystepscene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
-              Posição: Demonstração da Cifragem Decimal-Binária
-            </div>
-          </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação vetorial: decomposição de <i>M=42</i> e <i>K=27</i> em 8 bits, escaneamento bit a bit da operação XOR gerando <i>C=49</i> e simetria de decifragem <i>49 &oplus; 27 = 42</i>.
+            </figcaption>
+          </figure>
+        </div>
 
-          <!-- Vídeo 2: O Risco do Two-Time Pad -->
-          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
-            <div class="space-y-3">
-              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
-                <div class="h-10 w-10 rounded bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-500 mb-2">
-                  ${icons.play}
-                </div>
-                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 2: O Risco do Two-Time Pad</span>
-                <span class="text-[11px] text-amber-500 font-mono mt-1">Duração prevista: ~14s</span>
-              </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                <strong>Roteiro Didático:</strong> Demonstra visualmente duas mensagens cifradas com a mesma chave. A operação ${tex("C_1 \\oplus C_2")} faz a chave ${tex("K")} evaporar graficamente da tela, restando apenas ${tex("M_1 \\oplus M_2")} e permitindo que as palavras originais apareçam.
-              </p>
+        <!-- Vídeo 2: A Catástrofe da Reutilização de Chave (Two-Time Pad) -->
+        <div class="space-y-2 pt-4">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 2: A Quebra do Sigilo por Reutilização de Chave (Two-Time Pad)
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/otptwotimepadscene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-amber-500">
-              Posição: Demonstração do Ataque por Reutilização
-            </div>
-          </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação analítica: quando a mesma chave <i>K</i> cifra dois textos, <i>C₁ &oplus; C₂</i> provoca a colisão e cancelamento mútuo da chave (<i>K &oplus; K = 0</i>), expondo <i>M₁ &oplus; M₂</i>.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -564,50 +560,46 @@ function renderHillTab(): string {
         </div>
       </section>
 
-      <!-- Seção 2: Demonstrações Visuais em Vídeo (Dois Slots Específicos) -->
-      <section class="space-y-6">
+      <!-- Seção 2: Demonstrações Visuais Didáticas -->
+      <section class="space-y-8">
         <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
-          2. Demonstrações Visuais Didáticas (Planejamento de Vídeos)
+          2. Demonstrações Visuais em Vídeo
         </h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Vídeo 1: Codificação com Calma -->
-          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
-            <div class="space-y-3">
-              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
-                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
-                  ${icons.play}
-                </div>
-                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 1: Codificação no Espaço Modular (Com Calma)</span>
-                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~16s</span>
-              </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                <strong>Roteiro Didático:</strong> Demonstra com ritmo calmo e pausas reflexivas a transformação linear 2D. O par de letras <code>"HE" -> (7, 4)</code> é plotado como vetor no plano modular ${tex("\\mathbb{Z}_{26}^2")}, sofre multiplicação pela matriz ${tex("K")} e alcança suavemente as coordenadas <code>(7, 8) -> "HI"</code>.
-              </p>
+        <!-- Vídeo 1: Codificação no Espaço Modular 2D -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 1: Codificação Matricial 2D no Espaço Modular (Passo a Passo)
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/hillencodescene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
-              Posição: Demonstração da Cifragem Matricial 2D
-            </div>
-          </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação geométrica: vetorização do par <i>"HE" &rarr; p=(7, 4)</i>, produto matricial <i>K &bull; p (mod 26)</i> com ritmo calmo no plano discreto e deslocamento suave até <i>c=(7, 8) &rarr; "HI"</i>.
+            </figcaption>
+          </figure>
+        </div>
 
-          <!-- Vídeo 2: Decodificação com a Inversa -->
-          <div class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-4 flex flex-col justify-between">
-            <div class="space-y-3">
-              <div class="aspect-video bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded flex flex-col items-center justify-center p-4 text-center">
-                <div class="h-10 w-10 rounded bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 mb-2">
-                  ${icons.play}
-                </div>
-                <span class="text-xs font-semibold text-slate-900 dark:text-white">Vídeo 2: Decodificação com Matriz Inversa</span>
-                <span class="text-[11px] text-slate-500 font-mono mt-1">Duração prevista: ~16s</span>
-              </div>
-              <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-                <strong>Roteiro Didático:</strong> Demonstra com clareza o cálculo da matriz inversa ${tex("K^{-1} \\equiv (\\det K)^{-1} \\operatorname{adj}(K)")} e sua aplicação geométrica: a transformação inversa atuando sobre o vetor cifrado <code>(7, 8)</code> e restaurando exatamente o ponto original <code>(7, 4) -> "HE"</code>.
-              </p>
+        <!-- Vídeo 2: Decodificação com a Matriz Inversa Modular -->
+        <div class="space-y-2 pt-4">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 2: Decodificação com a Matriz Inversa Modular K⁻¹
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/hilldecodescene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
             </div>
-            <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 text-[11px] font-mono text-slate-500">
-              Posição: Demonstração da Decifragem por Matriz Inversa
-            </div>
-          </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação analítica: cálculo da matriz inversa <i>K⁻¹</i> e aplicação da transformação reversa sobre o vetor cifrado <i>(7, 8)</i>, restaurando com exatidão as coordenadas <i>(7, 4) &rarr; "HE"</i>.
+            </figcaption>
+          </figure>
         </div>
       </section>
 
