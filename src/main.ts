@@ -440,11 +440,72 @@ function renderVigenereTab(): string {
         </div>
       </section>
 
+      <!-- Seção 2: Demonstrações Visuais Didáticas -->
+      <section class="space-y-8">
+        <h3 class="text-base font-semibold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-800 pb-2">
+          2. Demonstrações Visuais em Vídeo
+        </h3>
+
+        <!-- Vídeo 1: Cifragem Polialfabética e Expansão da Chave -->
+        <div class="space-y-2">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 1: Cifragem Polialfabética e Alinhamento Cíclico da Chave
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/vigenereencodescene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação passo a passo: expansão contínua da chave <i>"CHAVE"</i> sobre a frase clara, preservação de espaçamentos e soma modular <i>cᵢ ≡ (mᵢ + kᵢ) (mod 26)</i> gerando múltiplos alfabetos cifrados.
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Vídeo 2: Decifragem Modular e Normalização (+26) -->
+        <div class="space-y-2 pt-4">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 2: Decifragem Modular e Inversão de Deslocamento
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/vigeneredecodescene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação analítica: cálculo reverso <i>mᵢ ≡ (cᵢ - kᵢ + 26) (mod 26)</i> com normalização positiva no anel ℤ₂₆ e recuperação integral da frase original.
+            </figcaption>
+          </figure>
+        </div>
+
+        <!-- Vídeo 3: Criptanálise pelo Exame de Kasiski -->
+        <div class="space-y-2 pt-4">
+          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
+            Demonstração 3: Criptanálise de Kasiski — Quebra da Periodicidade da Chave
+          </h4>
+          <figure class="flex flex-col items-center justify-center my-4">
+            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+                <source src="./assets/videos/vigenerekasiskiscene.mp4" type="video/mp4">
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+            </div>
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+              Animação do ataque de Kasiski: detecção de trigramas repetidos no criptograma, cálculo do MDC das distâncias (<i>L = mdc(15, 25) = 5</i>) e decomposição do texto em cifras monoalfabéticas de César.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
       <!-- Bancada Interativa Vigenère -->
       <section class="bg-white dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 rounded-md p-6 space-y-6">
         <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
           <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-            <span>Bancada de Teste: Simulador Vigenère</span>
+            <span>3. Bancada de Teste: Simulador Vigenère</span>
           </h3>
           <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Validação em tempo real do requisito de no mínimo 4 palavras.
