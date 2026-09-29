@@ -278,36 +278,36 @@ function renderOtpTab(): string {
         </h3>
 
         <!-- Vídeo 1: Cifragem e Decifragem Passo a Passo -->
-        <div class="space-y-2">
+        <div class="space-y-2 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 1: Cifragem e Decifragem Passo a Passo (Decimal &harr; Binário &harr; XOR)
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/otpstepbystepscene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação passo a passo: cifragem completa de <i>M=42</i> com <i>K=27</i> gerando <i>C=49</i>, seguida pela demonstração visual da decifragem simétrica <i>C &oplus; K</i> recuperando com exatidão a mensagem original <i>M=42</i>.
             </figcaption>
           </figure>
         </div>
 
         <!-- Vídeo 2: A Catástrofe da Reutilização de Chave (Two-Time Pad) -->
-        <div class="space-y-2 pt-4">
+        <div class="space-y-2 pt-4 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 2: A Quebra do Sigilo por Reutilização de Chave (Two-Time Pad)
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/otptwotimepadscene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação com scanner bit a bit: o adversário calcula <i>C₁ &oplus; C₂</i> e o leitor percorre cada coluna demonstrando a anulação da chave (<i>K &oplus; K = 0</i>), expondo diretamente <i>M₁ &oplus; M₂</i> e revelando as mensagens originais sem a chave secreta.
             </figcaption>
           </figure>
@@ -447,55 +447,37 @@ function renderVigenereTab(): string {
         </h3>
 
         <!-- Vídeo 1: Cifragem Polialfabética e Expansão da Chave -->
-        <div class="space-y-2">
+        <div class="space-y-2 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 1: Cifragem Polialfabética e Alinhamento Cíclico da Chave
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/vigenereencodescene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação passo a passo: expansão contínua da chave <i>"CHAVE"</i> sobre a frase clara, preservação de espaçamentos e soma modular <i>cᵢ ≡ (mᵢ + kᵢ) (mod 26)</i> gerando múltiplos alfabetos cifrados.
             </figcaption>
           </figure>
         </div>
 
         <!-- Vídeo 2: Decifragem Modular e Normalização (+26) -->
-        <div class="space-y-2 pt-4">
+        <div class="space-y-2 pt-4 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 2: Decifragem Modular e Inversão de Deslocamento
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/vigeneredecodescene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação analítica: cálculo reverso <i>mᵢ ≡ (cᵢ - kᵢ + 26) (mod 26)</i> com normalização positiva no anel ℤ₂₆ e recuperação integral da frase original.
-            </figcaption>
-          </figure>
-        </div>
-
-        <!-- Vídeo 3: Criptanálise pelo Exame de Kasiski -->
-        <div class="space-y-2 pt-4">
-          <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
-            Demonstração 3: Criptanálise de Kasiski — Quebra da Periodicidade da Chave
-          </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
-                <source src="./assets/videos/vigenerekasiskiscene.mp4" type="video/mp4">
-                Seu navegador não suporta a tag de vídeo.
-              </video>
-            </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação do ataque de Kasiski: detecção de trigramas repetidos no criptograma, cálculo do MDC das distâncias (<i>L = mdc(15, 25) = 5</i>) e decomposição do texto em cifras monoalfabéticas de César.
             </figcaption>
           </figure>
         </div>
@@ -628,36 +610,36 @@ function renderHillTab(): string {
         </h3>
 
         <!-- Vídeo 1: Codificação no Espaço Modular 2D -->
-        <div class="space-y-2">
+        <div class="space-y-2 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 1: Codificação Matricial 2D no Espaço Modular (Passo a Passo)
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/hillencodescene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação vetorial calma: codificação detalhada do 1º bloco <i>"CR" &rarr; p₁=(2, 17) &rarr; c₁=(5, 11) &rarr; "FL"</i> no espaço discreto ℤ₂₆, seguida pela transformação sequencial dos blocos seguintes gerando o criptograma <i>"FLRNVE"</i> a partir de <i>"CRIPTO"</i>.
             </figcaption>
           </figure>
         </div>
 
         <!-- Vídeo 2: Decodificação com a Matriz Inversa Modular -->
-        <div class="space-y-2 pt-4">
+        <div class="space-y-2 pt-4 w-full">
           <h4 class="text-xs font-mono font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 text-center">
             Demonstração 2: Decodificação com a Matriz Inversa Modular K⁻¹
           </h4>
-          <figure class="flex flex-col items-center justify-center my-4">
-            <div class="w-full sm:w-4/5 md:w-3/4 max-w-3xl aspect-video overflow-hidden rounded-md border border-slate-200 dark:border-slate-800 bg-black shadow-sm">
-              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block">
+          <figure class="flex flex-col items-center justify-center my-4 w-full">
+            <div class="w-full aspect-video overflow-hidden rounded-xl bg-black shadow-sm">
+              <video controls autoplay loop muted playsinline class="w-full h-full object-contain block rounded-xl">
                 <source src="./assets/videos/hilldecodescene.mp4" type="video/mp4">
                 Seu navegador não suporta a tag de vídeo.
               </video>
             </div>
-            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
+            <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-2xl">
               Animação analítica: decodificação detalhada do 1º bloco <i>c₁=(5, 11)</i> multiplicando pela matriz inversa <i>K⁻¹</i> restaurando <i>(2, 17) &rarr; "CR"</i>, com reversão progressiva dos blocos seguintes e recuperação integral da palavra <i>"CRIPTO"</i>.
             </figcaption>
           </figure>
