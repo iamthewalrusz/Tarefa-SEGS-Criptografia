@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Laboratório de Criptografia | SEGS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 min-h-screen flex flex-col font-sans transition-colors duration-200">
+    <!-- Header Principal -->
+    <header class="border-b border-slate-200 dark:border-slate-800/80 bg-white/80 dark:bg-slate-900/60 backdrop-blur sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center space-x-3 cursor-pointer" id="header-home-btn">
+          <div class="h-9 w-9 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-700 dark:text-teal-400">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-sm sm:text-base font-semibold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+              Laboratório de Criptografia
+              <span class="text-[11px] px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 font-mono">SEGS</span>
+            </h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Segurança de Sistemas &bull; Análise de Algoritmos Criptográficos</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Abas de Navegação -->
+          <nav class="flex items-center gap-1 p-1 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-md text-xs font-medium" id="nav-tabs">
+            <button data-tab="visao-geral" class="tab-btn px-3 py-1.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
+              Início
+            </button>
+            <button data-tab="otp" class="tab-btn px-3 py-1.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
+              One-Time Pad
+            </button>
+            <button data-tab="vigenere" class="tab-btn px-3 py-1.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
+              Vigenère
+            </button>
+            <button data-tab="hill" class="tab-btn px-3 py-1.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition">
+              Cifra de Hill
+            </button>
+          </nav>
+
+          <!-- Alternador de Tema Claro / Escuro -->
+          <button
+            type="button"
+            id="theme-toggle"
+            class="h-9 w-9 rounded-md bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition"
+            title="Alternar tema claro / escuro"
+            aria-label="Alternar tema"
+          >
+            <!-- Ícone Sol (aparece no escuro) -->
+            <svg id="theme-icon-sun" class="w-4 h-4 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            <!-- Ícone Lua (aparece no claro) -->
+            <svg id="theme-icon-moon" class="w-4 h-4 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Conteúdo Dinâmico -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="app">
+      <!-- Injetado via main.ts -->
+    </main>
+
+    <!-- Rodapé Sóbrio e Minimalista -->
+    <footer class="border-t border-slate-200 dark:border-slate-900 bg-white dark:bg-slate-950 py-6 text-center text-xs text-slate-500 dark:text-slate-400">
+      <div class="max-w-6xl mx-auto px-4 space-y-1">
+        <p>Laboratório de Segurança de Sistemas &bull; Análise e Desenvolvimento de Sistemas</p>
+        <p class="font-mono text-[11px] text-slate-400 dark:text-slate-400">Implementação em TypeScript &bull; Otimizado para GitHub Pages</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
