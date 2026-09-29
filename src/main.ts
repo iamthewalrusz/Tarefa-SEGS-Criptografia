@@ -308,7 +308,7 @@ function renderOtpTab(): string {
               </video>
             </div>
             <figcaption class="mt-2 text-center text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xl">
-              Animação analítica: interceptação prática de dois canais cifrados com a mesma chave <i>K</i>, cancelamento mútuo da chave (<i>K &oplus; K = 0</i>) ao calcular <i>C₁ &oplus; C₂</i> e recuperação prática das mensagens sem conhecer <i>K</i>.
+              Animação com scanner bit a bit: o adversário calcula <i>C₁ &oplus; C₂</i> e o leitor percorre cada coluna demonstrando a anulação da chave (<i>K &oplus; K = 0</i>), expondo diretamente <i>M₁ &oplus; M₂</i> e revelando as mensagens originais sem a chave secreta.
             </figcaption>
           </figure>
         </div>
